@@ -1,0 +1,175 @@
+{
+		"table number": "T14-0089-A",
+		"title": {
+			"label": "Repeal the Individual Alternative Minimum Tax (AMT)\nBaseline:Current Law\nDistribution of Federal Tax Change by Expanded Cash Income Percentile, 2015",
+			"footnotes":[
+				{"text": "foo"}
+			]
+		},
+		"type": "Distribution Summary Table",
+		"data":{
+			"by quintile":{
+				"Tax Units with Tax Increase or Cut":{
+					"With Tax Cut":{
+						"Pct of Tax Units":{
+							"Lowest Quintile": 0,
+							"Second Quintile": 0.001,
+							"Middle Quintile": 0.9,
+							"Fourth Quintile": 2.0,
+							"Top Quintile": 17.6,
+							"All": 3.0
+						},
+						"Avg Tax Cut":{
+							"Lowest Quintile": 0,
+							"Second Quintile": "Insufficient Data",
+							"Middle Quintile": -884,
+							"Fourth Quintile": -3054,
+							"Top Quintile": -6977,
+							"All": -6206
+						}
+					},
+					"With Tax Increase":{
+						"Pct of Tax Units":{
+							"Lowest Quintile": 0,
+							"Second Quintile": 0,
+							"Middle Quintile": 0,
+							"Fourth Quintile": 0,
+							"Top Quintile": 0,
+							"All": 0
+						},
+						"Avg Tax Increase":{
+							"Lowest Quintile": 0,
+							"Second Quintile": 0,
+							"Middle Quintile": 0,
+							"Fourth Quintile": 0,
+							"Top Quintile": 0,
+							"All": 0
+						}
+					}
+				},
+				"Percent Change in After-Tax Income":{
+					"Lowest Quintile": 0,
+					"Second Quintile": 0,
+					"Middle Quintile": 0,
+					"Fourth Quintile": 0.1,
+					"Top Quintile": 0.5,
+					"All": 0.3
+				},
+
+				"ETC ETC": "ETC ETC"
+			},
+			"Addendum":{
+				"Tax Units with Tax Increase or Cut":{
+					"With Tax Cut":{
+						"Pct of Tax Units":{
+							"80-90": 2.0,
+							"90-95": 10.9,
+							"95-99": 61.3,
+							"Top 1 Percent": 31.1,
+							"Top 0.1 Percent": 17.0
+						},
+						"Avg Tax Cut":{
+							"80-90": -5546,
+							"90-95": -3565,
+							"95-99": -5569,
+							"Top 1 Percent": -24620,
+							"Top 0.1 Percent": -137090
+						}
+					},
+					"With Tax Increase":{
+						"Pct of Tax Units":{
+							"80-90": 0,
+							"90-95": 0,
+							"95-99": 0,
+							"Top 1 Percent": 0,
+							"Top 0.1 Percent": 0
+
+						},
+						"Avg Tax Increase":{
+							"80-90": 0,
+							"90-95": 0,
+							"95-99": 0,
+							"Top 1 Percent": 0,
+							"Top 0.1 Percent": 0
+
+						}
+					}
+				},
+				"Percent Change in After-Tax Income":{
+					"80-90": 0.1,
+					"90-95": 0.2,
+					"95-99": 1.2,
+					"Top 1 Percent": 0.6,
+					"Top 0.1 Percent": 0.4
+
+				},
+
+				"ETC ETC": "ETC ETC"
+
+			}
+		},
+		"table structure":{
+			"columns":[
+				{
+					"label": "Expanded Cash Income Percentile",
+					"footnotes":[
+						{"text":"foo"},
+						{"text":"bar"}
+					]
+				},
+				{
+					"label": "Tax Units with Tax Increase or Cut",
+					"footnotes":[{
+						"text": "foo" 
+					}],
+					"subcolumns":[
+						{
+							"label":"With Tax Cut",
+							"subcolumns":[
+								{
+									"label":"Pct of Tax Units"
+								},
+								{
+									"label":"Avg Tax Cut"
+								}
+							]
+						},
+						{
+							"label":"With Tax Increase",
+							"subcolumns":[
+								{
+									"label":"Pct of Tax Units"
+								},
+								{
+									"label":"Avg Tax Increase"
+								}
+							]
+						}
+					]	
+				},
+				{
+					"label":"Percent Change in After-Tax Income",
+					"footnotes":[
+						{"text":"foo"}
+					]
+				},
+				{
+					"ETC ETC":"ETC ETC"
+				}
+			],
+			"rows":[
+				{"label": "Lowest Quintile"},
+				{"label": "Second Quintile"},
+				{"label": "ETC"},
+				{"label":"Addendum","blank":"True"},
+				{"label":"80-90"},
+				{"label":"ETC"}
+
+			],
+			"footnotes":[
+				{"text":"Source foo"},
+				{"text":"Number of AMT Taxpayers (Millions)"},
+				{"text": "ETC ETC ETC"}
+			]
+		}	
+}

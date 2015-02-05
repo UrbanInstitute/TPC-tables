@@ -1,0 +1,189 @@
+{
+	"table_number":"T13-0210",
+	"tables":[
+		{
+			"run_ID": "model run #",
+			"publication_date": "Aug 26,2013",
+			"title":{
+				"label":"Characteristics of Alternative Minimum Tax (AMT) Payers",
+				"subtitle":"Percentage Affected by the AMT, 2012-2014,2023"
+			},
+			"data":[
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[4.6,4.2,22.7,4.3,25.0,5.4,47.8],
+				[0.02,0.001,38.6,0.04,43.7,0.01,76.2],
+				[0.1,0.01,89.2,0.1,89.5,0.1,98.4]
+			],
+			"columns":[
+				{
+					"label":"Current Law 2012",
+					"suppresed":true
+				},
+				{
+					"label":"2013",
+					"children":[
+						{"label":"Current Law"},
+						{"label":"Pre-ATRA Law"}
+					]
+				},
+				{
+					"label":"2014",
+					"children":[
+						{"label":"Current Law"},
+						{"label":"Pre-ATRA Law"}
+					]
+				},
+				{
+					"label":"2023",
+					"suppresed":true,
+					"children":[
+						{"label":"Current Law"},
+						{"label":"Pre-ATRA Law"}
+					]
+				}
+			],
+			"rows":[
+				{"label":"All Taxpayers"},
+				{"label":"All Tax Filers"},
+				{"label":"All Tax Units"},
+				{
+					"label":"Tax Units",
+					"children":[
+						{
+							"label":"By Exmapnded Cash Income (thousands of 2013$",
+							"children":[
+								{"label":"Less than 30"},
+								{"label":"30-50"},
+								{"label":"50-75"},
+								{"label":"75-100"},
+								{"label":"100-200"},
+								{"label":"200-500"},
+								{"label":"500-1,000"},
+								{"label":"1,000 and more"}
+							]
+						}
+					]
+				},
+				{
+					"label":"By Number of Children",
+					"children":[
+						{"label":"0"},
+						{"label":"1"},
+						{"label":"2"},
+						{"label":"3 or more"}
+					]
+				},
+				{
+					"label":"By State Tax Level",
+					"children":[
+						{"label":"High"},
+						{"label":"Middle"},
+						{"label":"Low"}
+					]
+				},
+				{
+					"label":"By Filing Status",
+					"children":[
+						{"label":"Single"},
+						{"label":"Married Filing Joint"},
+						{"label":"Head of Household"},
+						{"label":"Married Filing Separate"}
+					]
+				},
+				{"label":"Married Couple, 2+ Kinds<Exp Cash Income<100k"},
+				{"label":"Married Couple,2+Kinds,75k<AGI<100k"}
+			],
+			"footnotes":[
+				{
+					"type": "source",
+					"text": "Urban-Brooking Tax Policy Center Microsim..."
+				},
+				{
+					"type": "subtitle",
+					"text": "Includes AMT liability on Form..."
+				},
+				{
+					"type": "column",
+					"columns": [
+						["2013","Pre-ATRA Law"],
+						["2014","Pre-ATRA Law"],
+						["2023","Pre-ATRA Law"]
+					],
+					"text": "Pre ATRA law refers to..."
+				},
+				{
+					"type": "row",
+					"rows":[
+						"All Taxpayers"
+					],
+					"text": "Taxpayers are defined as..."
+				},
+				{
+					"type": "row",
+					"rows":[
+						["Tax Units","By Expanded Cash Income (thousands of 2013$)"]
+					],
+					"text": "Taxpayers units with negative adjusted..."
+				},
+				{
+					"type": "row",
+					"rows":[
+						"By number of Children"
+					],
+					"text": "Number of children is defined as ..."
+				},
+				{
+					"type": "cell",
+					"rows":[
+						["Tax Units","By Expanded Cash Income (thousands of 2013$)","less than 30"],
+						["Tax Units","By Expanded Cash Income (thousands of 2013$)","30-50"],
+						["Tax Units","By Expanded Cash Income (thousands of 2013$)","50-75"]
+					],
+					"columns":[
+						["2013","Pre-ATRA Law"],
+						["2013","Pre-ATRA Law"],
+						["2013","Pre-ATRA Law"]
+					],
+					"text": "Hypothetical footnote structure for linking to specific cells. This would place footnotes in the 3rd column, 4th, 5th, and 6th rows (values [.1,2.3,7.9]"
+				},
+				{
+					"type": "class",
+					"class": "lt_05",
+					"text": "hypothetical footnote to bind specific css classes or id's to a footnote. Classes and id's determined by conditional formatting, see below"
+				}
+			],
+			"conditional styles":[
+				{
+					"type":"range endpoint-exclusive",
+					"range":[0,0.05],
+					"class": "lt_05"
+				},
+				{
+					"type":"column include-children",
+					"column": ["2013"],
+					"class": "2013-vals"
+				}
+			]
+		}
+	]
+}
