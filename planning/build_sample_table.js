@@ -31,44 +31,62 @@ function build_title(title){
 
 }
 
+var counter = 0;
+var promises = [];
+var headers = []
+
 function build_columns(columns){
-	var row_depth = 1;
-	var header_obj = [];
+	
 	for(var i = 0; i < columns.length; i++) {
-		var col = columns[i]
-		// var col_obj = []
-		// col_obj.push([col["label"]])
-		var c = has_children([],col)
-		header_obj.push(c)
+		promises.push(function(){
+			col = columns[i]
+			var header = {"label":col["label"]}
+			header.row_span = 1
+			header.col_span = 1
+			header.row = 1
+			if(col.hasOwnProperty("children")){
+				counter++
+				console.log("header", [header])
+				console.log(col["children"])
+				var children = promises.push(drill_down([header],col["children"]))
+			}
+			return headers.push(header)
+			})
+		promises.push(function(){
+				if(typeof children !== "undefined"){
+					for(var j = 0; j < children.length; j++){
+						headers.push(children[i])
+					}
+				}
+			});
 	}
+	Q.all(promises).then(console.log(promises))
 
-	console.log(header_obj)
+}
 
-	function has_children(col_obj, col){
-		var children = col["children"]
-		// console.log("col",col)
-		// console.log("children",children)
+	// promises.push(console.log(headers))
 
-		if(children){
-			var tmp = []
-			col_obj.push(col["label"])
-
-			for(var i = 0; i< children.length; i++){
-				tmp.push(children[i]["label"])
+function drill_down(parents,children){
+	var output = [];
+	console.log("counter",counter);
+	console.log("parents",parents);
+	console.log("children",children);	
+	for(var i = 0; i < children.length; i++){
+		if(!children[i].hasOwnProperty("children")){
+			for(var j = 0; j < parents.length; j++){
+				parents[j].col_span++
+				parents[j].row += j
 			}
-			col_obj.push(tmp)
-
-			for(var i = 0; i< children.length; i++){
-				has_children(col_obj,children)
-			}
-
+			var header = {"label":children[i]["label"], "col_span":1,"row_span":1,"row":j}
+			output.push(header)
 		}
 		else{
-			col_obj.push(col["label"])
+			counter++
+			parents.push(children[i])
+			drill_down(parents, children[i]["children"])
 		}
-		return col_obj
 	}
-	
+	return output;
 }
 
 function build_rows(rows){

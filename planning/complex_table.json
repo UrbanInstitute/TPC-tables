@@ -36,36 +36,27 @@
 			],
 			"columns":[
 				{
-					"label":"Current Law 2012",
-					"suppresed":true
-				},
-				{
-					"label":"2013",
+					"label":"A",
 					"children":[
 						{
-							"label":"Current Law",
+							"label":"B",
 							"children":[
-								{"label":"Deep 1"},
-								{"label":"Deep 2"}
+								{"label":"C"},
+								{"label":"D"}
 							]
 						},
-						{
-							"label":"Pre-ATRA Law",
-							"children":[
-								{"label":"Deep 3"},
-								{"label":"Deep 4"}
-							]
-						}
+						{"label":"E"}
 					]
 				},
 				{
-					"label":"2023",
-					"suppresed":true,
+					"label":"F",
 					"children":[
-						{"label":"Current Law"},
-						{"label":"Pre-ATRA Law"}
+						{"label":"G"},
+						{"label":"H"},
+						{"label":"I"}
 					]
-				}
+				},
+				{"label":"J"}
 			],
 			"rows":[
 				{"label":"All Taxpayers"},
