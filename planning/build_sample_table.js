@@ -60,29 +60,33 @@ Object.prototype.findKey = function(keyObj) {
 };
 
 
-var table = d3.select("body").append("table"),
-        thead = table.append("thead"),
-        tbody = table.append("tbody");
+
+
+
+
 
 function build_table(json){
+	var table = d3.select("body").append("table"),
+        thead = table.append("thead"),
+        tbody = table.append("tbody");
 	var components = decompose_json(json)
 	build_title(components.title);
 	var columns =
-		build_columns(
+		build_column_array(
 			generateIds(components.columns)
 		);
 
 	col_array.map(function(c){return c.header_row = depthOfId(columns,c.id)});
 	col_array.map(function(c){return c.colspan = objColSpan(columns,c.id)})
-	console.log(col_array)
 	var max_depth = Math.max.apply(Math, DEPTHS)
 	//if element has no children, its rowspan = max_depth - row_number + 1
 	//otherwise it equals 1
-	col_array.map
+	col_array.map(function(c){return c.rowspan = objRowSpan(columns, c.id, max_depth)})
 	// console.log(depthOfId(columns,"A_2"))
 	// var tmp = ["A_2","B_5","C_8","D_9","E_6","F_3","G_6","H_7","I_8","J_4"]
 	// tmp.map(function(c){return console.log(c, objColSpan(columns,c))});
 	// console.log(generateIds(components.columns))
+	build_columns(col_array,thead)
 	build_rows(components.rows);
 	build_footnotes(components.footnotes);
 }
@@ -167,8 +171,16 @@ var objColSpan = function(columns,id){
 	colspan = 0;
 	noChildren(obj)
 	return colspan;
+}
 
-
+var objRowSpan = function(columns, id, max_depth){
+	var obj = columns.findKey({id:id})
+	if(!obj.hasOwnProperty("children")){
+		return max_depth - obj.header_row + 1
+	}
+	else{
+		return 1
+	}
 }
 var noChildren = function(obj){
 	if(obj.hasOwnProperty("children")){
@@ -181,11 +193,11 @@ var noChildren = function(obj){
 
 
 var col_array =[];
-var build_columns = function(columns){
+var build_column_array = function(columns){
 	for(var i = 0; i< columns.length; i++){
 		col_array.push(columns[i]);
 		if(columns[i].hasOwnProperty("children")){
-			build_columns(columns[i]["children"]);
+			build_column_array(columns[i]["children"]);
 		}
 	}
 	return(columns)
@@ -245,6 +257,21 @@ var build_columns = function(columns){
 // 	}
 // 	return output;
 // }
+function build_columns(col_array,thead){
+	for(var i = 0; i< Math.max.apply(Math, DEPTHS); i++){
+		thead.append('tr')
+		.attr('class','header_row_'+(i+1).toString())
+	}
+	console.log(col_array)
+	col_array.map(function(c){
+		d3.select('.header_row_'+c.header_row.toString())
+		.append('td')
+		.attr('rowspan',c.rowspan)
+		.attr('colspan',c.colspan)
+		.text(c.label)
+
+	})
+}
 
 function build_rows(rows){
 
