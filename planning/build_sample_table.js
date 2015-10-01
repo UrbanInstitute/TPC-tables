@@ -104,9 +104,9 @@ function decompose_json(json){
 }
 
 
-var id = 0;
+var autoIncrement = 0;
 function generateIds(data){
-	var cols = data.map(function(c){id++; return objId(c, id)});
+	var cols = data.map(function(c){autoIncrement++; return objId(c, autoIncrement)});
 	return cols;
 }
 
