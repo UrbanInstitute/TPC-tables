@@ -1,0 +1,3 @@
+- 1st column, which includes row labels, is a non-nested column
+- all header_cell objects contain the keys: data, class, colspan, data-row,data-col,data-notesymbol,rowspan (could check for existence but if not neccessary, logical tests decrease speed/performance)
+- colspan and rowspan either == "1" or == null for vals with non-standard col/rowspan
