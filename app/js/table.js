@@ -1,4 +1,17 @@
-d3.json("data/sample2.json", function(resp){
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    console.log('Query variable %s not found', variable);
+}
+
+
+d3.json("http://tpctables-stg.urban.org/node/1701/table_feed", function(resp){
 	var table = resp["tables"]["1787"]["table_data"]
 //Top level keys are col numbers, but bc of nesting number of keys != number of columns
 //however largest(integer) key == number of columns
