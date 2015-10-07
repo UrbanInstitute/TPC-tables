@@ -1,7 +1,8 @@
 #Bugs
 
-- **JSON creation**. Not a large enough sample to safely generalize errors, but I've seen the following problems:
-	- **Nesting columns not being parsed**
+**JSON creation. Not a large enough sample to safely generalize errors, but I've seen the following problems**
+
+###Nesting columns not being parsed
 <table>
 <tr><th colspan =2>Foo</th></tr>
 <tr><th>*Bar1*</th><th>*Bar2*</th>
@@ -9,7 +10,7 @@
 </table>
 In this example, Bar1 (header), Bar2 (header) and data2 (column) are completely absent from the JSON. Foo (header) and data1 (data) are in the JSON.
 
-	- **Non-consistent nesting in JSONS.**
+###Non-consistent nesting in JSONS.
 For example, from [this feed](http://tpctables-stg.urban.org/node/33148/table_feed), \_Single\_2 but not \_Single\_1 contains this incorrect JSON (with a header cell nested under itself). As shown in the [table view here](http://tpctables-stg.urban.org/427-distribution-table-demo/adjusted), the nested column should be "Number (thousands)"
 
 ```
@@ -30,8 +31,7 @@ For example, from [this feed](http://tpctables-stg.urban.org/node/33148/table_fe
  }
 ```
 
-
-- **Blank rows not handled:**
+###Blank rows not handled:
 <table>
 <tr><th colspan =3>Foo</th></tr>
 <tr><td>label1</td><td>data2</td><td>data3</td></tr>
@@ -44,12 +44,17 @@ In this example, the empty row adjacent to label2 is not represented in the JSON
 #Questions/ feature requests
 
 - For now, **we don't have an API** for the JSONs. If I'm remembering right we'd talked about **not** having a full RESTful API (which we certainly don't need, for the JSON -> HTMl process!), but the following 2 features would be great:
-	1. Enabling CORS on the current JSON feeds (e.g. http://tpctables-stg.urban.org/node/1701/table_feed). Currently [table.js](app/js/table.js) and [simple.js](app/js/table.js) rely on JSON data files and manually choosing table id's etc. For testing purposes, I was thinking of parsing a querystring like:
+
+
+###Enabling CORS on the current JSON feeds
+(e.g. http://tpctables-stg.urban.org/node/1701/table_feed). Currently [table.js](app/js/table.js) and [simple.js](app/js/table.js) rely on JSON data files and manually choosing table id's etc. For testing purposes, I was thinking of parsing a querystring like:
 ```
 /simple.html?node=1701&table=1787
 ```
  Which would make testing easier. This would require CORS enabled on tpctables-stg, I believe. Happy to help with any solution (or keep current JSON file solution if that works for you).
-	2. Down to road, it'd be useful to have **JSON endpoints for book, sheet, and table**, in order to create tabbed book layouts similar to what are currently in the backend of the Drupal tool. Is that straightforward to implement? Current JSON endpoint is just for sheet, so we can easily get table. The only thing really missing is a book **endpoint**.
+
+###JSON endpoints
+Down to road, it'd be useful to have JSON endpoints for book, sheet, and table, in order to create tabbed book layouts similar to what are currently in the backend of the Drupal tool. Is that straightforward to implement? Current JSON endpoint is just for sheet, so we can easily get table. The only thing really missing is a book **endpoint**.
 
 #Assumptions about JSON structure
 
