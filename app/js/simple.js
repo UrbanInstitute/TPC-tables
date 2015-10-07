@@ -1,18 +1,9 @@
-function getQueryVariable(variable) {
-    var query = window.location.search.substring(1);
-    var vars = query.split('&');
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split('=');
-        if (decodeURIComponent(pair[0]) == variable) {
-            return decodeURIComponent(pair[1]);
-        }
-    }
-    console.log('Query variable %s not found', variable);
-}
+var TABLE_ID = "1787"
+var JSON_PATH = "data/sample2.json"
 
 var promise = new Promise(function(resolve, reject){
-	d3.json("data/sample2.json", function(resp){
-		var table = resp["tables"]["1787"]["table_data"]
+	d3.json(JSON_PATH, function(resp){
+		var table = resp["tables"][TABLE_ID]["table_data"]
 	//Top level keys are col numbers, but bc of nesting number of keys != number of columns
 	//however largest(integer) key == number of columns
 		var colCount = Math.max.apply(null, Object.keys(table).map(function(n){ return parseInt(n)+1 }))
@@ -209,57 +200,6 @@ function styleTable(table){
 			return Math.min.apply(Math, pads);
 		})
 
-
-	table.selectAll("td.bar.pos .barContainer")
-		.style("width", function(d){
-			var cellWidth = this.parentNode.offsetWidth*.8
-			return cellWidth * (parseFloat(d.value)/ d.max)
-		})
-	table.selectAll("td.bar.neg .barContainer")
-		.style("width", function(d){
-				var cellWidth = this.parentNode.offsetWidth*.8
-			var width = cellWidth * (parseFloat(d.value)/ d.min)
-			d3.select(this)
-				.style("margin-left", function(){
-					return cellWidth/.8 - width - 20;
-				})
-			return width;
-		})
-	table.selectAll("td.splitBar.pos .barContainer")
-		.style("margin-left", function(d){
-			var cellWidth = this.parentNode.offsetWidth*.8
-			return cellWidth/2
-		})
-		.style("width", function(d){
-			var cellWidth = this.parentNode.offsetWidth*.8/2
-			return cellWidth * (parseFloat(d.value)/ Math.max(d.max, Math.abs(d.min)))
-		})
-	table.selectAll("td.splitBar.neg .barContainer")
-		.style("margin-left", function(d){
-			var cellWidth = this.parentNode.offsetWidth*.8
-			return cellWidth/2 - (cellWidth/2 * (Math.abs(parseFloat(d.value))/ Math.max(d.max, Math.abs(d.min))))
-		})
-		.style("width", function(d){
-			var cellWidth = this.parentNode.offsetWidth*.8/2
-			// console.log(Math.max(d.max, Math.abs(d.min)))
-			return cellWidth * (Math.abs(parseFloat(d.value))/ Math.max(d.max, Math.abs(d.min)))
-		})
-	// table.selectAll("td")
-	// 	.style("background-color", function(d){
-	// 		if(parseInt(d["data-col"]) % 2 == 1){
-	// 			return "rgba(0,0,0,.1)";
-	// 		}
-	// 	})
-	// table.selectAll("th")
-	// 	.style("background-color", function(d){
-	// 		if(parseInt(d["data-col"]) % 2 == 1){
-	// 			return "rgba(0,0,0,.1)";
-	// 		}
-	// 	})
-
-}
-function addRow(rows, colCount){
-	rows.push(new Array(colCount))
 }
 
 function writeCell(cell, type){

@@ -28,9 +28,9 @@ table td {
 	border-left: 2px solid #fff;
 	border-right: 2px solid #fff;
     /*border: 1px solid #eee;*/
-    vertical-align: top;
+    vertical-align: middle;
     padding: 10px;
-    text-align: center;
+    text-align: right;
     width: 60px;
     /*max-width: 60px;*/
     min-width: 60px;
@@ -57,8 +57,11 @@ table thead th{
 
 }
 
+.innerText{
+    padding-right: 0;
+}
 
-.bar span{
+.bar .barContainer{
     position: absolute;
     /* left: 0; */
     margin-left: 0px;
@@ -70,13 +73,13 @@ table thead th{
     margin-top: -22px;
 }
 
-.pos span{
+.pos .barContainer{
 	background-color: #1696d2;
     border-top: 2px solid white;
     border-bottom: 2px solid white;
     border-left: 2px solid black;
 }
-.neg span{
+.neg .barContainer{
 	/*position: absolute;*/
 	/* left: 0; */
 	/*margin-left: -10px;*/
@@ -92,7 +95,7 @@ table thead th{
 	/*margin-top: -19px;*/
 }
 
-.splitBar span{
+.splitBar .barContainer{
     position: absolute;
     /* left: 0; */
     margin-left: 0px;
