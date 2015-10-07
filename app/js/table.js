@@ -135,6 +135,8 @@ function buildTable(rows){
 						.attr("colspan", cell.colspan)
 						.attr("data-col", cell["data-col"])
 						.attr("data-row", cell["data-row"])
+						.append("span")
+						.classed("innerText", true)
 						.text(cell.value)
 				}
 			}
@@ -181,19 +183,41 @@ function tdClasses(table){
 			}
 		})
 		.append("span")
+		.classed("barContainer", true)
 	return table;
 }
 
 function styleTable(table){
-	table.selectAll("td.bar.pos span")
+
+
+//center all text within cells
+	table.selectAll(".innerText")
+		.style("padding-right", function(){
+			var textW = d3.select(this).node().getBoundingClientRect().width;
+			var cellW = d3.select(this).node().parentNode.getBoundingClientRect().width;
+			return (cellW - textW -22)/2
+		})
+//then, line up all right edges of text
+	table.selectAll(".innerText")
+		.style("padding-right", function(){
+			var pads = []
+			var col = d3.select(d3.select(this).node().parentNode).attr("data-col")
+			var tds = d3.selectAll("td[data-col='" + col +"']")
+			tds[0].forEach(function(td){
+				pads.push(parseFloat(d3.select(td).select("span").style("padding-right").replace("px","")))
+			})
+			return Math.min.apply(Math, pads);
+		})
+
+
+	table.selectAll("td.bar.pos .barContainer")
 		.style("width", function(d){
 			var cellWidth = this.parentNode.offsetWidth*.8
 			return cellWidth * (parseFloat(d.value)/ d.max)
 		})
-	table.selectAll("td.bar.neg span")
+	table.selectAll("td.bar.neg .barContainer")
 		.style("width", function(d){
-			console.log(d)
-			var cellWidth = this.parentNode.offsetWidth*.8
+				var cellWidth = this.parentNode.offsetWidth*.8
 			var width = cellWidth * (parseFloat(d.value)/ d.min)
 			d3.select(this)
 				.style("margin-left", function(){
@@ -201,7 +225,7 @@ function styleTable(table){
 				})
 			return width;
 		})
-	table.selectAll("td.splitBar.pos span")
+	table.selectAll("td.splitBar.pos .barContainer")
 		.style("margin-left", function(d){
 			var cellWidth = this.parentNode.offsetWidth*.8
 			return cellWidth/2
@@ -210,7 +234,7 @@ function styleTable(table){
 			var cellWidth = this.parentNode.offsetWidth*.8/2
 			return cellWidth * (parseFloat(d.value)/ Math.max(d.max, Math.abs(d.min)))
 		})
-	table.selectAll("td.splitBar.neg span")
+	table.selectAll("td.splitBar.neg .barContainer")
 		.style("margin-left", function(d){
 			var cellWidth = this.parentNode.offsetWidth*.8
 			return cellWidth/2 - (cellWidth/2 * (Math.abs(parseFloat(d.value))/ Math.max(d.max, Math.abs(d.min))))
