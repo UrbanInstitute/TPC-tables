@@ -2,10 +2,104 @@ body{
 	font-family: Lato;
 }
 
-table{
-	border-collapse: collapse;
-	border: 1px solid black;
+table {
+	font-size: 13px;
+    border-collapse: collapse;
+    padding: 0;
+    margin: 0 0 11px 0;
+    width: 100%;
 }
-td, th{
-	border: 1px solid black;
+table tbody{
+	background-color: #efefef;
+}
+
+table th {
+    /*text-align: left;*/
+    border: 2px solid #9d9d9d;
+    /*vertical-align: bottom;*/
+    /*padding: 0 10px 10px 10px;*/
+    /*text-align: center;*/
+    width: 60px;
+    /*max-width: 60px;*/
+    min-width: 60px;
+}
+
+table td {
+	border-left: 2px solid #fff;
+	border-right: 2px solid #fff;
+    /*border: 1px solid #eee;*/
+    vertical-align: top;
+    padding: 10px;
+    text-align: center;
+    width: 60px;
+    /*max-width: 60px;*/
+    min-width: 60px;
+}
+
+table td:nth-child(1) {
+    /*text-align: left;*/
+    /*padding-left: 0;*/
+    border-left: 2px solid #9d9d9d;
+    border-right: 2px solid #9d9d9d;
+    background-color: #696969;
+    color: #fff;
+    text-align: left;
+    font-weight: bold;
+}
+
+table thead th{
+	color: white;
+	background-color: #696969;
+	text-align: center;
+	vertical-align: middle;
+    /*padding: 0 10px 10px 10px;*/
+    padding: 5px;
+
+}
+
+
+.bar span{
+    position: absolute;
+    /* left: 0; */
+    margin-left: 0px;
+    /* width: 100px; */
+    height: 5px;
+    display: block;
+    z-index: 2;
+    /* bottom: 44px; */
+    margin-top: -22px;
+}
+
+.pos span{
+	background-color: #1696d2;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    border-left: 2px solid black;
+}
+.neg span{
+	/*position: absolute;*/
+	/* left: 0; */
+	/*margin-left: -10px;*/
+	/*width: 100px;*/
+	/*height: 24px;*/
+	background-color: #db2b27;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    border-right: 2px solid black;
+	 /*display: block; */
+	/*z-index: -1;*/
+	/* bottom: 44px; */
+	/*margin-top: -19px;*/
+}
+
+.splitBar span{
+    position: absolute;
+    /* left: 0; */
+    margin-left: 0px;
+    /* width: 100px; */
+    height: 5px;
+    display: block;
+    z-index: 2;
+    /* bottom: 44px; */
+    margin-top: -22px;
 }
