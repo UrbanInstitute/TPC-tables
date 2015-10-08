@@ -48,14 +48,14 @@ table td {
 
 table td:last-child {
 
-    border-right: 1px solid #ccc;
+    border-right: 1px solid #eee;
 }
 
 tbody tr:last-child {
     /*border-bottom: 2px solid #ccc;*/
 }
 thead tr th:last-child{
-    border-right: 1px solid #ccc;
+    border-right: 1px solid #eee;
 }
 table td:nth-child(1) {
     /*text-align: left;*/
