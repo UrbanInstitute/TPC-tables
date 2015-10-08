@@ -1,5 +1,5 @@
 body{
-	font-family: Lato;
+	font-family: Avenir, Lato, sans-serif;
     margin: 0;
 }
 
@@ -16,7 +16,7 @@ table tbody{
 
 table th {
     /*text-align: left;*/
-    border: 1px solid #ccc;
+    border: 1px solid #f6f6f6;
     border-left: 1px solid #bbb;
     border-right: 1px solid #bbb;
     border-bottom: 2px solid #ccc;
@@ -29,7 +29,7 @@ table th {
 }
 
 table th:first-child{
-    borderleft:1px solid #ccc;
+    border-left:1px solid #f6f6f6;
 }
 
 
@@ -52,7 +52,7 @@ table td:last-child {
 }
 
 tbody tr:last-child {
-    border-bottom: 2px solid #ccc;
+    /*border-bottom: 2px solid #ccc;*/
 }
 thead tr th:last-child{
     border-right: 1px solid #ccc;
@@ -60,7 +60,7 @@ thead tr th:last-child{
 table td:nth-child(1) {
     /*text-align: left;*/
     /*padding-left: 0;*/
-    border-left: 1px solid #ccc;
+    border-left: 1px solid #f6f6f6;
     border-right: 1px solid #bbb;
     background-color: #f6f6f6;
     color: #333;
@@ -96,8 +96,8 @@ table thead th{
 
 .pos .barContainer{
 	background-color: #008bb0;
-    border-top: 2px solid #efefef;
-    border-bottom: 2px solid #efefef;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
     border-left: 2px solid black;
 }
 .neg .barContainer{
@@ -107,8 +107,8 @@ table thead th{
 	/*width: 100px;*/
 	/*height: 24px;*/
 	background-color: #f0573e;
-    border-top: 2px solid #efefef;
-    border-bottom: 2px solid #efefef;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
     border-right: 2px solid black;
 	 /*display: block; */
 	/*z-index: -1;*/
@@ -153,7 +153,7 @@ table.scrolling td:nth-child(1){
     right: 0;
     top: 2;
     z-index: 9;
-    width: 100px;
+    width: 80px;
 }
 .leftFader{
     position: fixed;

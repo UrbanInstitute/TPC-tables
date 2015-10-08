@@ -322,7 +322,7 @@ function responsiveTable(table){
 		      .attr("class", "scrollFade gradient")
 		      .attr("x",0)
 		      .attr("y",0)
-		      .attr("width", 100)
+		      .attr("width", 80)
 		      .attr("height", "100%")
 		      .attr("fill", "url(#rightGradient)")
 
