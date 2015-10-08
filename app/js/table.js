@@ -302,21 +302,21 @@ function responsiveTable(table){
 
 		  gradient.append("svg:stop")
 		      .attr("offset", "0%")
-		      .attr("stop-color", "#000")
+		      .attr("stop-color", "#fff")
 		      .attr("stop-opacity", 0);
 		  gradient.append("svg:stop")
-		      .attr("offset", "30%")
-		      .attr("stop-color", "#000")
-		      .attr("stop-opacity", .1);
-
-		  gradient.append("svg:stop")
-		      .attr("offset", "60%")
-		      .attr("stop-color", "#000")
-		      .attr("stop-opacity", .9);
-		  gradient.append("svg:stop")
 		      .attr("offset", "100%")
-		      .attr("stop-color", "#000")
+		      .attr("stop-color", "#fff")
 		      .attr("stop-opacity", 1);
+
+		  // gradient.append("svg:stop")
+		  //     .attr("offset", "60%")
+		  //     .attr("stop-color", "#000")
+		  //     .attr("stop-opacity", .9);
+		  // gradient.append("svg:stop")
+		  //     .attr("offset", "100%")
+		  //     .attr("stop-color", "#000")
+		  //     .attr("stop-opacity", 1);
 
 		  rightShadow.append("rect")
 		      .attr("class", "scrollFade gradient")
@@ -341,21 +341,14 @@ function responsiveTable(table){
 		      .attr("y2", "0%")
 		      .attr("spreadMethod", "pad");
 
+		      //first-column gradient: simple linear gradient, going from 30% to 0% over the width
 		  gradient.append("svg:stop")
-		      .attr("offset", "0%")
+		      .attr("offset", "00%")
 		      .attr("stop-color", "#000")
-		      .attr("stop-opacity", .7);
-		  gradient.append("svg:stop")
-		      .attr("offset", "10%")
-		      .attr("stop-color", "#000")
-		      .attr("stop-opacity", .9);
+		      .attr("stop-opacity", .3);
 
 		  gradient.append("svg:stop")
-		      .attr("offset", "20%")
-		      .attr("stop-color", "#000")
-		      .attr("stop-opacity", .1);
-		  gradient.append("svg:stop")
-		      .attr("offset", "30%")
+		      .attr("offset", "100%")
 		      .attr("stop-color", "#000")
 		      .attr("stop-opacity", 0);
 
@@ -363,7 +356,7 @@ function responsiveTable(table){
 		      .attr("class", "scrollFade gradient")
 		      .attr("x",0)
 		      .attr("y",0)
-		      .attr("width", 100)
+		      .attr("width", 5)
 		      .attr("height", "100%")
 		      .attr("fill", "url(#leftGradient)")
 

@@ -11,12 +11,15 @@ table {
     width: 100%;
 }
 table tbody{
-	background-color: #efefef;
+	background-color: #fff;
 }
 
 table th {
     /*text-align: left;*/
-    border: 2px solid #fff;
+    border: 1px solid #ccc;
+    border-left: 1px solid #bbb;
+    border-right: 1px solid #bbb;
+    border-bottom: 2px solid #ccc;
     /*vertical-align: bottom;*/
     /*padding: 0 10px 10px 10px;*/
     /*text-align: center;*/
@@ -25,9 +28,15 @@ table th {
     min-width: 60px;
 }
 
+table th:first-child{
+    borderleft:1px solid #ccc;
+}
+
+
 table td {
-	border-left: 2px solid #fff;
-	border-right: 2px solid #fff;
+    border: 1px solid #eee;
+	border-left: 1px solid #bbb;
+	border-right: 1px solid #bbb;
     /*border: 1px solid #eee;*/
     vertical-align: middle;
     padding: 10px;
@@ -37,26 +46,31 @@ table td {
     min-width: 60px;
 }
 
-tbody tr:last-child td:nth-child(1){
-    border-bottom: 2px solid #174a7c;
+table td:last-child {
+
+    border-right: 1px solid #ccc;
+}
+
+tbody tr:last-child {
+    border-bottom: 2px solid #ccc;
 }
 thead tr th:last-child{
-    border-right: 1px solid #174a7c;
+    border-right: 1px solid #ccc;
 }
 table td:nth-child(1) {
     /*text-align: left;*/
     /*padding-left: 0;*/
-    border-left: 2px solid #fff;
-    border-right: 2px solid #fff;
-    background-color: #174a7c;
-    color: #fff;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #bbb;
+    background-color: #f6f6f6;
+    color: #333;
     text-align: left;
     font-weight: bold;
 }
 
 table thead th{
-	color: white;
-	background-color: #174a7c;
+	color: #333;
+	background-color: #f6f6f6;
 	text-align: center;
 	vertical-align: middle;
     /*padding: 0 10px 10px 10px;*/
@@ -139,11 +153,11 @@ table.scrolling td:nth-child(1){
     right: 0;
     top: 2;
     z-index: 9;
-    width: 30px;
+    width: 100px;
 }
 .leftFader{
     position: fixed;
-    left: 69;
+    left: 82;
     top: 2;
     z-index: 9;
     width: 30px;
