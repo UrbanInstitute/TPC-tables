@@ -95,7 +95,6 @@ function buildRows(rows, table){
 							var cell = data["data_cells"][c]
 							var tmp = rows[parseInt(cell["data-row"])]
 							tmp.splice(parseInt(cell["data-col"]), 0, writeCell(cell, "data"))
-							// rows[parseInt(cell["data-row"])][parseInt(cell["data-col"])] = writeCell(cell, "data")
 						}
 					}
 				}
@@ -103,8 +102,6 @@ function buildRows(rows, table){
 		}
 	}
 	return rows
-	// window.setTimeout(function(){
-	// 	buildTable(rows)}, 10);
 }
 
 function buildTable(rows){
@@ -116,11 +113,8 @@ function buildTable(rows){
 	}); 
 
 	var table = d3.select("#testTable")
-		// .append("table")
-	// if(table.selectAll("table")[0].length != 100){
 		table = table
 			.append("table")
-			// .classed("scrolling", SCROLL)
 		var section = table.append("thead")
 		table.append("tbody")
 
@@ -254,28 +248,20 @@ function styleTable(table){
 		})
 		.style("width", function(d){
 			var cellWidth = this.parentNode.offsetWidth*.8/2
-			// console.log(Math.max(d.max, Math.abs(d.min)))
 			return cellWidth * (Math.abs(parseFloat(d.value))/ Math.max(d.max, Math.abs(d.min)))
 		})
 	return table;
 
 }
 function scrollTable(table){
-	// table.on("scroll", function(){
-	// 	console.log("foo")
-	// 	console.log(table.node().scrollLeft)
-	// });
 	window.addEventListener("scroll", function(){
 		var pos = window.pageXOffset || document.documentElement.scrollLeft
 		var overlap = d3.select("table").node().getBoundingClientRect().width - d3.select("table").node().parentNode.getBoundingClientRect().width;
-		// console.log(pos, overlap)
 		if(overlap-pos <=50){
 			d3.select(".rightFader")
-				// .transition()
 				.style("right", -(50-(overlap-pos)))
 		} else{
 			d3.select(".rightFader")
-				// .transition()
 				.style("right", 0)			
 		}
 
@@ -286,7 +272,6 @@ function responsiveTable(table){
 	SCROLL = checkScroll();
 	var headRows = d3.selectAll("thead tr")[0].length
 	var headHeight = d3.select("thead").node().getBoundingClientRect().height;
-	console.log(SCROLL)
 	if(SCROLL){
 		for(var r = 2; r < headRows+1; r++){
 			d3.select("thead tr:nth-child(" + r + ")")
@@ -309,7 +294,6 @@ function responsiveTable(table){
 		var rightShadow = table.append("svg")
 			.classed("rightFader", true)
 			.attr("height", function(){
-				console.log(table.node().parentNode.getBoundingClientRect().height)
 				return table.node().parentNode.getBoundingClientRect().height
 			})
 			.append("g")
@@ -330,15 +314,6 @@ function responsiveTable(table){
 		      .attr("offset", "100%")
 		      .attr("stop-color", "#fff")
 		      .attr("stop-opacity", 1);
-
-		  // gradient.append("svg:stop")
-		  //     .attr("offset", "60%")
-		  //     .attr("stop-color", "#000")
-		  //     .attr("stop-opacity", .9);
-		  // gradient.append("svg:stop")
-		  //     .attr("offset", "100%")
-		  //     .attr("stop-color", "#000")
-		  //     .attr("stop-opacity", 1);
 
 		  rightShadow.append("rect")
 		      .attr("class", "scrollFade gradient")
@@ -363,7 +338,7 @@ function responsiveTable(table){
 		      .attr("y2", "0%")
 		      .attr("spreadMethod", "pad");
 
-		      //first-column gradient: simple linear gradient, going from 30% to 0% over the width
+  //first-column gradient: simple linear gradient, going from 30% to 0% over the width
 		  gradient.append("svg:stop")
 		      .attr("offset", "00%")
 		      .attr("stop-color", "#000")
