@@ -51,22 +51,22 @@ function render(){
 		})
 	})
 	promise.then(function(result){
-		// var resp = buildTable(result);
-		// return resp;
 		return buildTable(result);
 	})
-	.then(function(result){
-		// var resp = tdClasses(result);
-		// return resp;
-		return tdClasses(result)
+	.then(function(table){
+		return tdClasses(table)
+	})
+	.then(function(table){
+		return styleTable(table)
+	})
+	.then(function(table){
+		return responsiveTable(table);
+	})
+	.then(function(table){
+		return scrollTable(table);
 	})
 	.then(function(result){
-		// var resp = styleTable(result);
-		// return
-		return styleTable(result)
-	})
-	.then(function(result){
-		responsiveTable(result);
+		d3.selectAll("svg").attr("height", result.node().parentNode.getBoundingClientRect().height);
 	})
 }
 render();
@@ -208,7 +208,7 @@ function styleTable(table){
 		.style("padding-right", function(){
 			var textW = d3.select(this).node().getBoundingClientRect().width;
 			var cellW = d3.select(this).node().parentNode.getBoundingClientRect().width;
-			return (cellW - textW -22)/2
+			return (cellW - textW -21)/2
 		})
 //then, line up all right edges of text
 	table.selectAll(".innerText")
@@ -260,6 +260,28 @@ function styleTable(table){
 	return table;
 
 }
+function scrollTable(table){
+	// table.on("scroll", function(){
+	// 	console.log("foo")
+	// 	console.log(table.node().scrollLeft)
+	// });
+	window.addEventListener("scroll", function(){
+		var pos = window.pageXOffset || document.documentElement.scrollLeft
+		var overlap = d3.select("table").node().getBoundingClientRect().width - d3.select("table").node().parentNode.getBoundingClientRect().width;
+		// console.log(pos, overlap)
+		if(overlap-pos <=50){
+			d3.select(".rightFader")
+				// .transition()
+				.style("right", -(50-(overlap-pos)))
+		} else{
+			d3.select(".rightFader")
+				// .transition()
+				.style("right", 0)			
+		}
+
+	});
+	return table;
+}
 function responsiveTable(table){
 	SCROLL = checkScroll();
 	var headRows = d3.selectAll("thead tr")[0].length
@@ -276,19 +298,19 @@ function responsiveTable(table){
 		d3.selectAll(".spacer").remove()
 	}
 	d3.select("thead tr:nth-child(1) th:nth-child(1)")
-	.style("height", headHeight-13 + "px")
+	.style("height", headHeight-12 + "px")
 
 	d3.selectAll("tbody tr")
 		.style("height", function(){
 			var rowHeight = d3.select(this).node().getBoundingClientRect().height;
-			// return {"rowHeight" : rowHeight}
 			return rowHeight + "px"
 		})
 	if(SCROLL){
 		var rightShadow = table.append("svg")
 			.classed("rightFader", true)
 			.attr("height", function(){
-				return table.node().getBoundingClientRect().height - 4
+				console.log(table.node().parentNode.getBoundingClientRect().height)
+				return table.node().parentNode.getBoundingClientRect().height
 			})
 			.append("g")
 		  var gradient = rightShadow.append("svg:defs")
@@ -329,7 +351,7 @@ function responsiveTable(table){
 		var leftShadow = table.append("svg")
 			.classed("leftFader", true)
 			.attr("height", function(){
-				return table.node().getBoundingClientRect().height - 4
+				return table.node().parentNode.getBoundingClientRect().height
 			})
 			.append("g")
 		  var gradient = leftShadow.append("svg:defs")
@@ -363,6 +385,7 @@ function responsiveTable(table){
 	}
 
 	table.classed("scrolling", SCROLL)
+	return table;
 }
 
 function writeCell(cell, type){

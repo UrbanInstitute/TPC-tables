@@ -7,7 +7,7 @@ table {
 	font-size: 13px;
     border-collapse: collapse;
     padding: 0;
-    margin: 0 0 11px 0;
+    margin: 0;
     width: 100%;
 }
 table tbody{
@@ -143,6 +143,9 @@ table.scrolling td:nth-child(1){
     width: 58px;
     max-width: 58px;
 }
+.spacer{
+    padding-right: 15px;
+}
 /*table.scrolling th:nth-child(1){
     position: relative;
     left: 82px;
@@ -151,14 +154,14 @@ table.scrolling td:nth-child(1){
 .rightFader{
     position: fixed;
     right: 0;
-    top: 2;
+    top: 0;
     z-index: 9;
     width: 80px;
 }
 .leftFader{
     position: fixed;
     left: 82;
-    top: 2;
+    top: 0;
     z-index: 9;
     width: 30px;
 }
