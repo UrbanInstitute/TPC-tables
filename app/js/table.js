@@ -10,57 +10,65 @@ function getQueryVariable(variable) {
     console.log('Query variable %s not found', variable);
 }
 
-var promise = new Promise(function(resolve, reject){
-	d3.json("data/sample2.json", function(resp){
-		var table = resp["tables"]["1787"]["table_data"]
-	//Top level keys are col numbers, but bc of nesting number of keys != number of columns
-	//however largest(integer) key == number of columns
-		var colCount = Math.max.apply(null, Object.keys(table).map(function(n){ return parseInt(n)+1 }))
-		var rows =[]
+var SCROLL = false;
+function render(){
+	SCROLL = checkScroll;
+	d3.selectAll("table").remove();
+	var promise = new Promise(function(resolve, reject){
+		d3.json("data/sample2.json", function(resp){
+			var table = resp["tables"]["1787"]["table_data"]
+		//Top level keys are col numbers, but bc of nesting number of keys != number of columns
+		//however largest(integer) key == number of columns
+			var colCount = Math.max.apply(null, Object.keys(table).map(function(n){ return parseInt(n)+1 }))
+			var rows =[]
 
-		var initializer = table[0]
-		var initRows = parseInt(initializer["header_cell"]["data-row"])
-		for(var i = 0; i < initRows+1; i++){
-			rows.push(new Array(colCount))
-		}
-		var tmp = rows[initRows]
-		tmp.splice(0, 0, writeCell(initializer["header_cell"], "header"));
-		for (ind in initializer["label_cells"]){
-			var cell = initializer["label_cells"][ind]
-			var row = parseInt(cell["data-row"])
-			if(row < rows.length){
-				tmp = rows[row]
-				tmp.splice(0,0,writeCell(cell, "label"))
-			}else{
-				for(var j = rows.length; j < row+1; j++){
-					rows.push(new Array(colCount))
-					if(j == row){
-						tmp = rows[row]
-						tmp.splice(0,0,writeCell(cell, "label"))
+			var initializer = table[0]
+			var initRows = parseInt(initializer["header_cell"]["data-row"])
+			for(var i = 0; i < initRows+1; i++){
+				rows.push(new Array(colCount))
+			}
+			var tmp = rows[initRows]
+			tmp.splice(0, 0, writeCell(initializer["header_cell"], "header"));
+			for (ind in initializer["label_cells"]){
+				var cell = initializer["label_cells"][ind]
+				var row = parseInt(cell["data-row"])
+				if(row < rows.length){
+					tmp = rows[row]
+					tmp.splice(0,0,writeCell(cell, "label"))
+				}else{
+					for(var j = rows.length; j < row+1; j++){
+						rows.push(new Array(colCount))
+						if(j == row){
+							tmp = rows[row]
+							tmp.splice(0,0,writeCell(cell, "label"))
+						}
 					}
 				}
 			}
-		}
 
-		var resp = buildRows(rows, table)
-		resolve(resp)
+			var resp = buildRows(rows, table)
+			resolve(resp)
 
+		})
 	})
-})
-promise.then(function(result){
-	var resp = buildTable(result);
-	return resp;
-})
-.then(function(result){
-	var resp = tdClasses(result);
-	return resp;
-})
-.then(function(result){
-	styleTable(result);
-})
+	promise.then(function(result){
+		var resp = buildTable(result);
+		return resp;
+	})
+	.then(function(result){
+		var resp = tdClasses(result);
+		return resp;
+	})
+	.then(function(result){
+		styleTable(result);
+	})
+}
+render();
+window.onresize=render;
 
-
-
+function checkScroll(){
+	return true;
+}
 
 function buildRows(rows, table){
 	for(obj in table){
@@ -106,6 +114,7 @@ function buildTable(rows){
 	// if(table.selectAll("table")[0].length != 100){
 		table = table
 			.append("table")
+			.classed("scrolling", SCROLL)
 		var section = table.append("thead")
 		table.append("tbody")
 
@@ -188,7 +197,16 @@ function tdClasses(table){
 }
 
 function styleTable(table){
-
+	var headRows = d3.selectAll("thead tr")[0].length
+	var headHeight = d3.select("thead").node().getBoundingClientRect().height;
+	if(SCROLL){
+		for(var r = 2; r < headRows+1; r++){
+			d3.select("thead tr:nth-child(" + r + ")")
+				.insert("th", "th:nth-child(1)")
+		}
+	}
+	d3.select("thead tr:nth-child(1) th:nth-child(1)")
+		.style(height, headHeight + "px")
 
 //center all text within cells
 	table.selectAll(".innerText")
@@ -244,6 +262,54 @@ function styleTable(table){
 			// console.log(Math.max(d.max, Math.abs(d.min)))
 			return cellWidth * (Math.abs(parseFloat(d.value))/ Math.max(d.max, Math.abs(d.min)))
 		})
+var svg = table.append("svg")
+	.classed("fader", true)
+	.attr("height", function(){
+		return table.node().getBoundingClientRect().height - 4
+	})
+	.append("g")
+  var gradient = svg.append("svg:defs")
+    .append("svg:linearGradient")
+      .attr("id", "gradient")
+      .attr("x1", "0%")
+      .attr("y1", "0%")
+      .attr("x2", "100%")
+      .attr("y2", "0%")
+      .attr("spreadMethod", "pad");
+
+  gradient.append("svg:stop")
+      .attr("offset", "0%")
+      .attr("stop-color", "#555")
+      .attr("stop-opacity", 0);
+  gradient.append("svg:stop")
+      .attr("offset", "30%")
+      .attr("stop-color", "#555")
+      .attr("stop-opacity", .1);
+
+  gradient.append("svg:stop")
+      .attr("offset", "90%")
+      .attr("stop-color", "#555")
+      .attr("stop-opacity", .9);
+  gradient.append("svg:stop")
+      .attr("offset", "100%")
+      .attr("stop-color", "#555")
+      .attr("stop-opacity", 1);
+
+  svg.append("rect")
+      .attr("class", "scrollFade gradient")
+      .attr("x",0)
+      .attr("y",0)
+      .attr("width", 100)
+      .attr("height", "100%")
+      .attr("fill", "url(#gradient)")
+  // svg.append("rect")
+  //     .attr("class", "scrollFade solid")
+  //     .attr("x",-50)
+  //     .attr("y",-120)
+  //     .attr("width", 350)
+  //     .attr("height", 83-67)
+  //     .attr("fill", "#fff")
+
 	// table.selectAll("td")
 	// 	.style("background-color", function(d){
 	// 		if(parseInt(d["data-col"]) % 2 == 1){
