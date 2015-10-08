@@ -117,25 +117,37 @@ table thead th{
 
 /********************** SPILLOVER STYLES *******************/
 table.scrolling thead tr:nth-child(1) th:nth-child(1){
-    width: 69px;
+    width: 70px;
     z-index: 10;
     position: fixed;
     left: 0;
+}
+table.scrolling td:nth-child(1){
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    width: 58px;
+    max-width: 58px;
 }
 /*table.scrolling th:nth-child(1){
     position: relative;
     left: 82px;
 }*/
 
-.fader{
+.rightFader{
     position: fixed;
     right: 0;
     top: 2;
-    z-index: 10;
-    width: 40px;
-    /*height: 100%;*/
+    z-index: 9;
+    width: 30px;
 }
-
+.leftFader{
+    position: fixed;
+    left: 69;
+    top: 2;
+    z-index: 9;
+    width: 30px;
+}
 
 
 

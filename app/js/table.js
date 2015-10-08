@@ -12,7 +12,6 @@ function getQueryVariable(variable) {
 
 var SCROLL = false;
 function render(){
-	SCROLL = checkScroll;
 	d3.selectAll("table").remove();
 	var promise = new Promise(function(resolve, reject){
 		d3.json("data/sample2.json", function(resp){
@@ -52,22 +51,29 @@ function render(){
 		})
 	})
 	promise.then(function(result){
-		var resp = buildTable(result);
-		return resp;
+		// var resp = buildTable(result);
+		// return resp;
+		return buildTable(result);
 	})
 	.then(function(result){
-		var resp = tdClasses(result);
-		return resp;
+		// var resp = tdClasses(result);
+		// return resp;
+		return tdClasses(result)
 	})
 	.then(function(result){
-		styleTable(result);
+		// var resp = styleTable(result);
+		// return
+		return styleTable(result)
+	})
+	.then(function(result){
+		responsiveTable(result);
 	})
 }
 render();
 window.onresize=render;
 
 function checkScroll(){
-	return true;
+	return d3.select("table").node().getBoundingClientRect().width > d3.select("table").node().parentNode.getBoundingClientRect().width;
 }
 
 function buildRows(rows, table){
@@ -114,7 +120,7 @@ function buildTable(rows){
 	// if(table.selectAll("table")[0].length != 100){
 		table = table
 			.append("table")
-			.classed("scrolling", SCROLL)
+			// .classed("scrolling", SCROLL)
 		var section = table.append("thead")
 		table.append("tbody")
 
@@ -197,17 +203,6 @@ function tdClasses(table){
 }
 
 function styleTable(table){
-	var headRows = d3.selectAll("thead tr")[0].length
-	var headHeight = d3.select("thead").node().getBoundingClientRect().height;
-	if(SCROLL){
-		for(var r = 2; r < headRows+1; r++){
-			d3.select("thead tr:nth-child(" + r + ")")
-				.insert("th", "th:nth-child(1)")
-		}
-	}
-	d3.select("thead tr:nth-child(1) th:nth-child(1)")
-		.style(height, headHeight + "px")
-
 //center all text within cells
 	table.selectAll(".innerText")
 		.style("padding-right", function(){
@@ -262,70 +257,119 @@ function styleTable(table){
 			// console.log(Math.max(d.max, Math.abs(d.min)))
 			return cellWidth * (Math.abs(parseFloat(d.value))/ Math.max(d.max, Math.abs(d.min)))
 		})
-var svg = table.append("svg")
-	.classed("fader", true)
-	.attr("height", function(){
-		return table.node().getBoundingClientRect().height - 4
-	})
-	.append("g")
-  var gradient = svg.append("svg:defs")
-    .append("svg:linearGradient")
-      .attr("id", "gradient")
-      .attr("x1", "0%")
-      .attr("y1", "0%")
-      .attr("x2", "100%")
-      .attr("y2", "0%")
-      .attr("spreadMethod", "pad");
-
-  gradient.append("svg:stop")
-      .attr("offset", "0%")
-      .attr("stop-color", "#555")
-      .attr("stop-opacity", 0);
-  gradient.append("svg:stop")
-      .attr("offset", "30%")
-      .attr("stop-color", "#555")
-      .attr("stop-opacity", .1);
-
-  gradient.append("svg:stop")
-      .attr("offset", "90%")
-      .attr("stop-color", "#555")
-      .attr("stop-opacity", .9);
-  gradient.append("svg:stop")
-      .attr("offset", "100%")
-      .attr("stop-color", "#555")
-      .attr("stop-opacity", 1);
-
-  svg.append("rect")
-      .attr("class", "scrollFade gradient")
-      .attr("x",0)
-      .attr("y",0)
-      .attr("width", 100)
-      .attr("height", "100%")
-      .attr("fill", "url(#gradient)")
-  // svg.append("rect")
-  //     .attr("class", "scrollFade solid")
-  //     .attr("x",-50)
-  //     .attr("y",-120)
-  //     .attr("width", 350)
-  //     .attr("height", 83-67)
-  //     .attr("fill", "#fff")
-
-	// table.selectAll("td")
-	// 	.style("background-color", function(d){
-	// 		if(parseInt(d["data-col"]) % 2 == 1){
-	// 			return "rgba(0,0,0,.1)";
-	// 		}
-	// 	})
-	// table.selectAll("th")
-	// 	.style("background-color", function(d){
-	// 		if(parseInt(d["data-col"]) % 2 == 1){
-	// 			return "rgba(0,0,0,.1)";
-	// 		}
-	// 	})
+	return table;
 
 }
-function addRow(rows, colCount){
-	rows.push(new Array(colCount))
+function responsiveTable(table){
+	SCROLL = checkScroll();
+	var headRows = d3.selectAll("thead tr")[0].length
+	var headHeight = d3.select("thead").node().getBoundingClientRect().height;
+	console.log(SCROLL)
+	if(SCROLL){
+		for(var r = 2; r < headRows+1; r++){
+			d3.select("thead tr:nth-child(" + r + ")")
+				.insert("th", "th:nth-child(1)")
+				.classed("spacer", true)
+		}
+	}
+	else{
+		d3.selectAll(".spacer").remove()
+	}
+	d3.select("thead tr:nth-child(1) th:nth-child(1)")
+	.style("height", headHeight-13 + "px")
+
+	d3.selectAll("tbody tr")
+		.style("height", function(){
+			var rowHeight = d3.select(this).node().getBoundingClientRect().height;
+			// return {"rowHeight" : rowHeight}
+			return rowHeight + "px"
+		})
+	if(SCROLL){
+		var rightShadow = table.append("svg")
+			.classed("rightFader", true)
+			.attr("height", function(){
+				return table.node().getBoundingClientRect().height - 4
+			})
+			.append("g")
+		  var gradient = rightShadow.append("svg:defs")
+		    .append("svg:linearGradient")
+		      .attr("id", "rightGradient")
+		      .attr("x1", "0%")
+		      .attr("y1", "0%")
+		      .attr("x2", "100%")
+		      .attr("y2", "0%")
+		      .attr("spreadMethod", "pad");
+
+		  gradient.append("svg:stop")
+		      .attr("offset", "0%")
+		      .attr("stop-color", "#000")
+		      .attr("stop-opacity", 0);
+		  gradient.append("svg:stop")
+		      .attr("offset", "30%")
+		      .attr("stop-color", "#000")
+		      .attr("stop-opacity", .1);
+
+		  gradient.append("svg:stop")
+		      .attr("offset", "60%")
+		      .attr("stop-color", "#000")
+		      .attr("stop-opacity", .9);
+		  gradient.append("svg:stop")
+		      .attr("offset", "100%")
+		      .attr("stop-color", "#000")
+		      .attr("stop-opacity", 1);
+
+		  rightShadow.append("rect")
+		      .attr("class", "scrollFade gradient")
+		      .attr("x",0)
+		      .attr("y",0)
+		      .attr("width", 100)
+		      .attr("height", "100%")
+		      .attr("fill", "url(#rightGradient)")
+
+		var leftShadow = table.append("svg")
+			.classed("leftFader", true)
+			.attr("height", function(){
+				return table.node().getBoundingClientRect().height - 4
+			})
+			.append("g")
+		  var gradient = leftShadow.append("svg:defs")
+		    .append("svg:linearGradient")
+		      .attr("id", "leftGradient")
+		      .attr("x1", "0%")
+		      .attr("y1", "0%")
+		      .attr("x2", "100%")
+		      .attr("y2", "0%")
+		      .attr("spreadMethod", "pad");
+
+		  gradient.append("svg:stop")
+		      .attr("offset", "0%")
+		      .attr("stop-color", "#000")
+		      .attr("stop-opacity", .7);
+		  gradient.append("svg:stop")
+		      .attr("offset", "10%")
+		      .attr("stop-color", "#000")
+		      .attr("stop-opacity", .9);
+
+		  gradient.append("svg:stop")
+		      .attr("offset", "20%")
+		      .attr("stop-color", "#000")
+		      .attr("stop-opacity", .1);
+		  gradient.append("svg:stop")
+		      .attr("offset", "30%")
+		      .attr("stop-color", "#000")
+		      .attr("stop-opacity", 0);
+
+		  leftShadow.append("rect")
+		      .attr("class", "scrollFade gradient")
+		      .attr("x",0)
+		      .attr("y",0)
+		      .attr("width", 100)
+		      .attr("height", "100%")
+		      .attr("fill", "url(#leftGradient)")
+
+	}
+
+	table.classed("scrolling", SCROLL)
 }
 
 function writeCell(cell, type){
