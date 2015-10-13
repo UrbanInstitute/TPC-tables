@@ -65,3 +65,23 @@ Down to road, it'd be useful to have JSON endpoints for book, sheet, and table, 
 - all objects in `data_cells` and `label_cells` contain the keys: `data, class, colspan, data-row,data-col,data-notesymbol,rowspan`
 - `colspan` and `rowspan` either == `"1"` or == `null` for vals with no special col/rowspan
 - objects in `table_data` objects EITHER have `nested` property OR `data_cells` property
+
+
+#Parent page requirments
+
+- The parent page will need to include the [pym.js](https://github.com/nprapps/pym.js) library, in order to create responsive iframes. If the library is included somwhere on the page, then table embed code will look like:
+
+```html
+<div id="table"></div>
+<script>
+    var pymParent = new pym.Parent('table', 'http://url.for.tables/index.html?tableID=foo', {});
+</script>
+```
+ (So CMS's etc can't strip js)
+
+-  **IF** links inside the iframe need to open outside of the iframe (e.g. if I create "book" level iframe embeds), then the following attribute would be required on the parent page:
+```html
+<base target="_blank" />
+```
+
+ Which  would possibly be an issue if the parent had set another, different `base` attribute.
