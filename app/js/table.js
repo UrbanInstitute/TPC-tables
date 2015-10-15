@@ -14,8 +14,8 @@ var SCROLL = false;
 function render(){
 	d3.selectAll("table").remove();
 	var promise = new Promise(function(resolve, reject){
-		d3.json("http://tpctables-stg.urban.org/node/29928/table_feed", function(resp){
-			var table = resp["tables"]["29791"]["table_data"]
+		d3.json("http://tpctables-stg.urban.org/node/1700/table_feed", function(resp){
+			var table = resp["tables"]["1757"]["table_data"]
 		//Top level keys are col numbers, but bc of nesting number of keys != number of columns
 		//however largest(integer) key == number of columns
 			var colCount = Math.max.apply(null, Object.keys(table).map(function(n){ return parseInt(n)+1 }))
@@ -385,7 +385,8 @@ function writeCell(cell, type){
 	if(parseInt(cell["rowspan"]) != 1 && cell["rowspan"] != null){ obj.rowspan = cell.rowspan }
 	obj["data-row"] = cell["data-row"]
 	obj["data-col"] = cell["data-col"]
-	obj["value"] = cell["data"]
-	obj["num"] = cell["data"].replace(/,/g,"")
+	obj["value"] = (cell["data"] == null) ? "" : cell["data"]
+	// console.log(cell["data"])
+	obj["num"] = (cell["data"] == null) ? "" : cell["data"].replace(/,/g,"")
 	return obj
 }
