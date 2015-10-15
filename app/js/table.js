@@ -14,8 +14,8 @@ var SCROLL = false;
 function render(){
 	d3.selectAll("table").remove();
 	var promise = new Promise(function(resolve, reject){
-		d3.json("http://tpctables-stg.urban.org/node/29637/table_feed", function(resp){
-			var table = resp["tables"]["29497"]["table_data"]
+		d3.json("http://tpctables-stg.urban.org/node/29928/table_feed", function(resp){
+			var table = resp["tables"]["29791"]["table_data"]
 		//Top level keys are col numbers, but bc of nesting number of keys != number of columns
 		//however largest(integer) key == number of columns
 			var colCount = Math.max.apply(null, Object.keys(table).map(function(n){ return parseInt(n)+1 }))
@@ -159,21 +159,21 @@ function tdClasses(table){
 		// .append("span")
 		.attr("class", function(d){
 			var col = d3.selectAll("td[data-col='" + d["data-col"] + "']").data();
-			col = col.filter(function(o){ return( !isNaN(parseFloat(o.value))) });
-			var max = Math.max.apply(Math,col.map(function(o){return parseFloat(o.value);}))
-			var min = Math.min.apply(Math,col.map(function(o){return parseFloat(o.value);}))
+			col = col.filter(function(o){ return( !isNaN(parseFloat(o.num))) });
+			var max = Math.max.apply(Math,col.map(function(o){return parseFloat(o.num);}))
+			var min = Math.min.apply(Math,col.map(function(o){return parseFloat(o.num);}))
 			d.min = min;
 			d.max = max;
-			var pos = col.filter(function(o){ return( parseFloat(o.value) > 0);  }).length;
-			var neg = col.filter(function(o){ return( parseFloat(o.value) < 0);  }).length;
-			var zero = col.filter(function(o){ return( parseFloat(o.value) == 0);  }).length;
+			var pos = col.filter(function(o){ return( parseFloat(o.num) > 0);  }).length;
+			var neg = col.filter(function(o){ return( parseFloat(o.num) < 0);  }).length;
+			var zero = col.filter(function(o){ return( parseFloat(o.num) == 0);  }).length;
 			// if()
 			console.log(d)
 			// if(d["data-col"])
 			if(pos == 0 && neg == 0){
 				return false;
 			}
-			else if(d.value == null || isNaN(parseFloat(d.value))){
+			else if(d.num == null || isNaN(parseFloat(d.num))){
 				return false;
 			}
 			else if(neg == 0){
@@ -183,10 +183,10 @@ function tdClasses(table){
 				return "bar neg";
 			}
 			else{
-				if(parseFloat(d.value) < 0){
+				if(parseFloat(d.num) < 0){
 					return "splitBar neg";
 				}
-				else if(parseFloat(d.value) > 0){
+				else if(parseFloat(d.num) > 0){
 					return "splitBar pos";
 				}
 				else{
@@ -223,12 +223,12 @@ function styleTable(table){
 	table.selectAll("td.bar.pos .barContainer")
 		.style("width", function(d){
 			var cellWidth = this.parentNode.offsetWidth*.8
-			return cellWidth * (parseFloat(d.value)/ d.max)
+			return cellWidth * (parseFloat(d.num)/ d.max)
 		})
 	table.selectAll("td.bar.neg .barContainer")
 		.style("width", function(d){
 				var cellWidth = this.parentNode.offsetWidth*.8
-			var width = cellWidth * (parseFloat(d.value)/ d.min)
+			var width = cellWidth * (parseFloat(d.num)/ d.min)
 			d3.select(this)
 				.style("margin-left", function(){
 					return cellWidth/.8 - width - 20;
@@ -242,16 +242,16 @@ function styleTable(table){
 		})
 		.style("width", function(d){
 			var cellWidth = this.parentNode.offsetWidth*.8/2
-			return cellWidth * (parseFloat(d.value)/ Math.max(d.max, Math.abs(d.min)))
+			return cellWidth * (parseFloat(d.num)/ Math.max(d.max, Math.abs(d.min)))
 		})
 	table.selectAll("td.splitBar.neg .barContainer")
 		.style("margin-left", function(d){
 			var cellWidth = this.parentNode.offsetWidth*.8
-			return cellWidth/2 - (cellWidth/2 * (Math.abs(parseFloat(d.value))/ Math.max(d.max, Math.abs(d.min))))
+			return cellWidth/2 - (cellWidth/2 * (Math.abs(parseFloat(d.num))/ Math.max(d.max, Math.abs(d.min))))
 		})
 		.style("width", function(d){
 			var cellWidth = this.parentNode.offsetWidth*.8/2
-			return cellWidth * (Math.abs(parseFloat(d.value))/ Math.max(d.max, Math.abs(d.min)))
+			return cellWidth * (Math.abs(parseFloat(d.num))/ Math.max(d.max, Math.abs(d.min)))
 		})
 	return table;
 
@@ -386,5 +386,6 @@ function writeCell(cell, type){
 	obj["data-row"] = cell["data-row"]
 	obj["data-col"] = cell["data-col"]
 	obj["value"] = cell["data"]
+	obj["num"] = cell["data"].replace(/,/g,"")
 	return obj
 }
