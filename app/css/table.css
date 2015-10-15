@@ -67,6 +67,9 @@ table td:nth-child(1) {
     text-align: left;
     font-weight: bold;
 }
+table td:nth-child(1) .barContainer{
+    display: none;
+}
 
 table thead th{
 	color: #333;

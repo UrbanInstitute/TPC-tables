@@ -14,8 +14,8 @@ var SCROLL = false;
 function render(){
 	d3.selectAll("table").remove();
 	var promise = new Promise(function(resolve, reject){
-		d3.json("data/sample2.json", function(resp){
-			var table = resp["tables"]["1787"]["table_data"]
+		d3.json("http://tpctables-stg.urban.org/node/29637/table_feed", function(resp){
+			var table = resp["tables"]["29497"]["table_data"]
 		//Top level keys are col numbers, but bc of nesting number of keys != number of columns
 		//however largest(integer) key == number of columns
 			var colCount = Math.max.apply(null, Object.keys(table).map(function(n){ return parseInt(n)+1 }))
@@ -167,6 +167,9 @@ function tdClasses(table){
 			var pos = col.filter(function(o){ return( parseFloat(o.value) > 0);  }).length;
 			var neg = col.filter(function(o){ return( parseFloat(o.value) < 0);  }).length;
 			var zero = col.filter(function(o){ return( parseFloat(o.value) == 0);  }).length;
+			// if()
+			console.log(d)
+			// if(d["data-col"])
 			if(pos == 0 && neg == 0){
 				return false;
 			}
