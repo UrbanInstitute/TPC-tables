@@ -3,6 +3,14 @@ body{
     margin: 0;
 }
 
+#tableTitle{
+    font-size: 1.5em;
+    color: #174a7c;
+}
+#tableNotes{
+    font-size:0.8em;
+    margin-top: 15px;
+}
 table {
 	font-size: 13px;
     border-collapse: collapse;

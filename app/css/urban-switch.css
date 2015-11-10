@@ -1,0 +1,63 @@
+.button-page-list li {
+    margin-bottom: 10px;
+    list-style: none;
+}
+
+.urban-switch {
+    font-size: 14px;
+    font-family: Avenir, Lato, sans-serif;
+    height: 43px;
+    text-transform: uppercase;
+    border: none;
+    color: #ffffff;
+    display: inline-block;
+    line-height: 43px;
+    padding-right: 10px;
+    text-align: left;
+    float: left;
+    /*border-radius: 10px;*/
+    /*padding-right: 10px;*/
+}
+
+.switch {
+    background-image: url(../img/off-on.png);
+    background-repeat: no-repeat;
+    width: 52px;
+    height: 18px;
+    display: inline-block;
+    background-size: cover;
+    cursor: pointer;
+    margin-right: 15px;
+    top: 4px;
+    left: 6px;
+    position: relative;
+    border-radius: 8px;
+
+    -webkit-transition:background-position .1s ease-in;  
+    -moz-transition:background-position .1s ease-in;  
+    -o-transition:background-position .1s ease-in;  
+    transition:background-position .1s ease-in; 
+
+}
+
+.off {
+    background-position: -31px 0px;
+}
+
+.on {
+    background-position: 0px 0px;
+}
+
+.tpc-gray{
+    background-color: #f6f6f6;
+    color: #333;
+}
+.trans-switch{
+    background: none;
+    color: #333;
+}
+
+.tpc-blue{
+    background-color: #174a7c;
+    color: #fff;
+}
