@@ -5,24 +5,26 @@
 
 </head>
 <body>
-	<div id = "tableTitle">Lorem Ipsum Dolor et Amit</div>
-	<div id = "chartToggle"><div class="urban-switch trans-switch">
-                    <div id="s1" class="switch on"></div>Display inline charts</div>
-                <!-- <div id="onoff">Watch me change colors</div> --></div>
-    <div id = "scrollArrows">
-    <div style="float:right; margin-right:15px; z-index:50;" class="hide-slider">
-          	<span id="panLeft" class="panner" data-scroll-modifier='-1'><img src="img/left.png" width="45" height="43" alt="Left"></span>
-			<span id="panRight" class="panner" data-scroll-modifier='1'><img src="img/right.png" width="45" height="43" alt="Right"></span>
+    <div id = "headerWrapper">
+    	<div class = "headerElement" id = "tableTitle"></div>
+    	<div class = "headerElement"id = "chartToggle"><div class="urban-switch trans-switch">
+                        <div id="s1" class="switch on"></div>Display inline charts</div>
+                    <!-- <div id="onoff">Watch me change colors</div> --></div>
+        <div class = "headerElement"id = "scrollArrows">
+            <div style="float:right; margin-right:15px; z-index:50;" class="hide-slider">
+                <span id="panLeft" class="panner" data-scroll-modifier='-1'><img src="img/left.png" width="45" height="43" alt="Left"></span>
+                <span id="panRight" class="panner" data-scroll-modifier='1'><img class = "enabled" src="img/right.png" width="45" height="43" alt="Right"></span>
+            </div>
         </div>
     </div>
 	<div id = "testTable"></div>
 	<div id = "tableNotes">Notes: Categorical palettes are best when you want to distinguish discrete chunks of data that do not have an inherent ordering.</div>
+<script src="js/vendor/jquery.min.js"></script>
 <script src = "js/vendor/es6-promise.min.js"></script>	
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
 <script src = "js/table.js"></script>
-        <script src="js/vendor/jquery.min.js"></script>
 
-<script src="js/urban-switch.js"></script>
+<!-- <script src="js/urban-switch.js"></script> -->
 
 </body>
 </html>

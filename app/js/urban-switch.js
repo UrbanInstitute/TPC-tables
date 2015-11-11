@@ -14,5 +14,6 @@ d3.select("#s1").on("click", function () {
         d3.select("#onoff")
             .style("color", "#666");
         show1 = 1;
+        console.log(d3.selectAll(".barcontainer"));
     }
 });

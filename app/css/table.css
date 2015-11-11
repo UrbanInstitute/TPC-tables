@@ -3,14 +3,7 @@ body{
     margin: 0;
 }
 
-#tableTitle{
-    font-size: 1.5em;
-    color: #174a7c;
-}
-#tableNotes{
-    font-size:0.8em;
-    margin-top: 15px;
-}
+
 table {
 	font-size: 13px;
     border-collapse: collapse;
@@ -142,7 +135,7 @@ table thead th{
 
 /********************** SPILLOVER STYLES *******************/
 table.scrolling thead tr:nth-child(1) th:nth-child(1){
-    width: 70px;
+    width: 120px;
     z-index: 10;
     position: fixed;
     left: 0;
@@ -151,11 +144,11 @@ table.scrolling td:nth-child(1){
     position: fixed;
     z-index: 10;
     left: 0;
-    width: 58px;
-    max-width: 58px;
+    width: 110px;
+    max-width: 110px;
 }
 .spacer{
-    padding-right: 15px;
+    padding-right: 65px;
 }
 /*table.scrolling th:nth-child(1){
     position: relative;
@@ -171,11 +164,77 @@ table.scrolling td:nth-child(1){
 }
 .leftFader{
     position: fixed;
-    left: 82;
+    left: 132;
     top: 0;
     z-index: 9;
     width: 30px;
 }
 
+/********************** OUTSIDE OF TABLE STYLES *******************/
+#tableTitle{
+    /*position: absolute;*/
+    padding-left: 10px;
+    font-size: 1.5em;
+    color: #174a7c;
+}
+#headerWrapper{
+    width: 100%;
+    /*position: absolute;*/
+    left: 10px;
+}
+#scrollArrows{
+    opacity: 0;
+}
 
+#tableTitle.scroll{
+    position: fixed;
+}
+#chartToggle.scroll{
+    position: fixed;
+    left: 4px;
+}
+#scrollArrows.scroll{
+    position: fixed;
+    right: -12px;
+}
+#scrollArrows img{
+    opacity: 0.3;
+}
+img.enabled:hover{
+    opacity: 1 !important;
+}
+#panLeft img{
+    opacity: 0.1;   
+}
+#headerWrapper{
+    width: 100%;
+    /*position: absolute;*/
+}
 
+/********************** FOOTNOTES *******************/
+#tableNotes{
+    position: fixed;
+    width: 100%;
+    left: 10px;
+    font-size:0.8em;
+    margin-top: 15px;
+}
+.footnote{
+    width: 100%;
+    border: 3px solid rgba(255, 0, 0, 0);
+}
+.symbol{
+    border: 3px solid rgba(255, 0, 0, 0);
+}
+.notesymbol{
+    float: left;
+    font-weight: bold;
+    padding-right: 5px;
+}
+.notetext p{
+    margin: 0;
+}
+.highlight{
+    background-color: #fdbf11;
+    border: 3px solid #fdbf11;
+}
