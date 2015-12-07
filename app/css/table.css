@@ -1,21 +1,42 @@
-body{
+#tableEmbed{
 	font-family: Avenir, Lato, sans-serif;
     margin: 0;
 }
+#tableEmbed ul{
+    padding: 0px;
+}
+#tableEmbed li {
+    list-style-type: none;
+    background-color: #fff;
+    color: black;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 8px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+#tableEmbed li:hover{
+    color: white;
+    background-color: #1696d2 !important;
+}
+#tableEmbed li.active{
+    color: white;
+    background-color: #062635
+}
 
-
-table {
+#tableEmbed table {
 	font-size: 13px;
     border-collapse: collapse;
     padding: 0;
     margin: 0;
     width: 100%;
 }
-table tbody{
+#tableEmbed table tbody{
 	background-color: #fff;
 }
 
-table th {
+#tableEmbed table th {
     /*text-align: left;*/
     border: 1px solid #f6f6f6;
     border-left: 1px solid #bbb;
@@ -29,12 +50,12 @@ table th {
     min-width: 60px;
 }
 
-table th:first-child{
+#tableEmbed table th:first-child{
     border-left:1px solid #f6f6f6;
 }
 
 
-table td {
+#tableEmbed table td {
     border: 1px solid #eee;
 	border-left: 1px solid #bbb;
 	border-right: 1px solid #bbb;
@@ -47,18 +68,18 @@ table td {
     min-width: 60px;
 }
 
-table td:last-child {
+#tableEmbed table td:last-child {
 
     border-right: 1px solid #eee;
 }
 
-tbody tr:last-child {
+#tableEmbed tbody tr:last-child {
     /*border-bottom: 2px solid #ccc;*/
 }
-thead tr th:last-child{
+#tableEmbed thead tr th:last-child{
     border-right: 1px solid #eee;
 }
-table td:nth-child(1) {
+#tableEmbed table td:nth-child(1) {
     /*text-align: left;*/
     /*padding-left: 0;*/
     border-left: 1px solid #f6f6f6;
@@ -68,11 +89,11 @@ table td:nth-child(1) {
     text-align: left;
     font-weight: bold;
 }
-table td:nth-child(1) .barContainer{
+#tableEmbed table td:nth-child(1) .barContainer{
     display: none;
 }
 
-table thead th{
+#tableEmbed table thead th{
 	color: #333;
 	background-color: #f6f6f6;
 	text-align: center;
@@ -82,11 +103,11 @@ table thead th{
 
 }
 
-.innerText{
+#tableEmbed .innerText{
     padding-right: 0;
 }
 
-.bar .barContainer{
+#tableEmbed .bar .barContainer{
     position: absolute;
     /* left: 0; */
     margin-left: 0px;
@@ -98,13 +119,13 @@ table thead th{
     margin-top: 0px;
 }
 
-.pos .barContainer{
+#tableEmbed .pos .barContainer{
 	background-color: #008bb0;
     border-top: 2px solid #fff;
     border-bottom: 2px solid #fff;
     border-left: 2px solid black;
 }
-.neg .barContainer{
+#tableEmbed .neg .barContainer{
 	/*position: absolute;*/
 	/* left: 0; */
 	/*margin-left: -10px;*/
@@ -120,7 +141,7 @@ table thead th{
 	/*margin-top: -19px;*/
 }
 
-.splitBar .barContainer{
+#tableEmbed .splitBar .barContainer{
     position: absolute;
     /* left: 0; */
     margin-left: 0px;
@@ -134,20 +155,20 @@ table thead th{
 
 
 /********************** SPILLOVER STYLES *******************/
-table.scrolling thead tr:nth-child(1) th:nth-child(1){
+#tableEmbed table.scrolling thead tr:nth-child(1) th:nth-child(1){
     width: 120px;
     z-index: 10;
     position: fixed;
     left: 0;
 }
-table.scrolling td:nth-child(1){
+#tableEmbed table.scrolling td:nth-child(1){
     position: fixed;
     z-index: 10;
     left: 0;
     width: 110px;
     max-width: 110px;
 }
-.spacer{
+#tableEmbed .spacer{
     padding-right: 65px;
 }
 /*table.scrolling th:nth-child(1){
@@ -155,14 +176,14 @@ table.scrolling td:nth-child(1){
     left: 82px;
 }*/
 
-.rightFader{
+#tableEmbed .rightFader{
     position: fixed;
     right: 0;
     top: 0;
     z-index: 9;
     width: 80px;
 }
-.leftFader{
+#tableEmbed .leftFader{
     position: fixed;
     left: 132;
     top: 0;
@@ -171,70 +192,80 @@ table.scrolling td:nth-child(1){
 }
 
 /********************** OUTSIDE OF TABLE STYLES *******************/
-#tableTitle{
+#tableEmbed #tableTitle{
     /*position: absolute;*/
     padding-left: 10px;
     font-size: 1.5em;
     color: #174a7c;
 }
-#headerWrapper{
+#tableEmbed #headerWrapper{
     width: 100%;
     /*position: absolute;*/
     left: 10px;
+    top: 0;
+    position: fixed;
 }
-#scrollArrows{
+#tableEmbed #headerWrapper.scrolling{
+    /*width: 100%;*/
+    /*position: absolute;*/
+    /*left: 10px;*/
+    margin-bottom: 55px;
+}
+#tableEmbed #scrollArrows{
+    cursor: pointer;
     opacity: 0;
 }
 
-#tableTitle.scroll{
-    position: fixed;
+#tableEmbed #tableTitle.scroll{
+    /*position: fixed;*/
 }
-#chartToggle.scroll{
-    position: fixed;
+#tableEmbed #chartToggle.scroll{
+    /*position: fixed;*/
     left: 4px;
 }
-#scrollArrows.scroll{
-    position: fixed;
+#tableEmbed #scrollArrows.scroll{
+    /*position: fixed;*/
     right: -12px;
 }
-#scrollArrows img{
+#tableEmbed #scrollArrows img{
     opacity: 0.3;
 }
-img.enabled:hover{
+#tableEmbed img.enabled:hover{
     opacity: 1 !important;
 }
-#panLeft img{
+#tableEmbed #panLeft img{
     opacity: 0.1;   
 }
-#headerWrapper{
+#tableEmbed #headerWrapper{
     width: 100%;
     /*position: absolute;*/
 }
 
 /********************** FOOTNOTES *******************/
-#tableNotes{
+#tableEmbed #tableNotes{
     position: fixed;
     width: 100%;
     left: 10px;
     font-size:0.8em;
     margin-top: 15px;
 }
-.footnote{
+#tableEmbed .footnote{
     width: 100%;
     border: 3px solid rgba(255, 0, 0, 0);
+    cursor: pointer;
 }
-.symbol{
+#tableEmbed .symbol{
     border: 3px solid rgba(255, 0, 0, 0);
 }
-.notesymbol{
+#tableEmbed .notesymbol{
     float: left;
     font-weight: bold;
     padding-right: 5px;
 }
-.notetext p{
+#tableEmbed .notetext p{
     margin: 0;
 }
-.highlight{
+#tableEmbed .highlight{
     background-color: #fcb64b;
     border: 3px solid #fcb64b;
 }

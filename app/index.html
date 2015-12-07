@@ -1,40 +1,7 @@
 <html>
-<head>
-		<link rel = "stylesheet" href = "css/table.css">
-		<link rel="stylesheet" href="css/urban-switch.css">
-
-</head>
-<body>
-<div id = "tableEmbed">
-    <div id = "headerWrapper">
-        <div id = "tabs"></div>
-    	<div class = "headerElement" id = "tableTitle"></div>
-    	<div class = "headerElement"id = "chartToggle"><div class="urban-switch trans-switch">
-                        <div id="s1" class="switch on"></div>Display inline charts</div>
-                    <!-- <div id="onoff">Watch me change colors</div> --></div>
-        <div class = "headerElement"id = "scrollArrows">
-            <div style="float:right; margin-right:15px; z-index:50;" class="hide-slider">
-                <span id="panLeft" class="panner" data-scroll-modifier='-1'><img src="img/left.png" width="45" height="43" alt="Left"></span>
-                <span id="panRight" class="panner" data-scroll-modifier='1'><img class = "enabled" src="img/right.png" width="45" height="43" alt="Right"></span>
-            </div>
-        </div>
-    </div>
-	<div id = "tableWrapper"></div>
-	<div id = "tableNotes"></div>
-</div>
-
-
-
-
-<script src="js/vendor/jquery.min.js"></script>
-<script src = "js/vendor/es6-promise.min.js"></script>	
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-<script src = "js/table.js"></script>
-
-<!-- dummy_php.js will not be present in production, it will be handled in Drupal-->
-<script src="js/dummy_php.js"></script>
-<!-- dummy_php.js will not be present in production, it will be handled in Drupal-->
-
-
-</body>
+<div id="testing"></div>
+<script type="text/javascript" src="js/vendor/pymTPCTables.js"></script>
+<script>
+    var parent = new pym.Parent('testing', 'child.html', {});
+</script>
 </html>

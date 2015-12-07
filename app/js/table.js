@@ -9,67 +9,73 @@ function getQueryVariable(variable) {
     }
 }
 
+
 var SCROLL = false;
 var RESIZE = false;
 var sheetID = null;
-// var tableID = null;
-var feed = null;
-function renderTableBook(resize, table_feed, default_sheet){
-	settings = settings; 
+var tableID = null;
+var feed = false;
+function renderTableBook(resize, table_feed, default_sheet, default_table){
+	// settings = settings; 
 	RESIZE = resize;
 	feed = table_feed;
 	sheetID = default_sheet;
-	// tableID	= default_table;
+	tableID	= default_table;
 	var resp = null;
 	// d3.selectAll("#tableEmbed #tableWrapper table").remove();
 	// var tableID = getQueryVariable("table")
 	var promise = new Promise(function(resolve, reject){
-		d3.json(table_feed, function(resp){
-		// for(var tableID in resp["sheets"][sheetID]["tables"]){
-		// 	// console.log("s1", tableID, resp)
-		// 	if(typeof(resp["sheets"]) != "undefined" && resp["sheets"][sheetID]["tables"].hasOwnProperty(tableID)){
-					var name = resp["sheets"][sheetID]["tables"][tableID]["table_name"];
-					d3.select("#tableTitle").text(name); 
-					var footnotes = resp["sheets"][sheetID]["sheet_notes"];
-					renderNotes(footnotes);
-					renderTabs(resp["sheets"]);
-					var table = resp["sheets"][sheetID]["tables"][tableID]["table_data"];
-				//Top level keys are col numbers, but bc of nesting number of keys != number of columns
-				//however largest(integer) key == number of columns
-					var colCount = Math.max.apply(null, Object.keys(table).map(function(n){ return parseInt(n)+1 }))
-					var rows =[]
+		if(!feed){ reject("loading")}
+		else{
+			d3.json(table_feed, function(error, resp){
+				if (error) return console.warn("loading...");
+			// for(var tableID in resp["sheets"][sheetID]["tables"]){
+			// 	// console.log("s1", tableID, resp)
+			// 	if(typeof(resp["sheets"]) != "undefined" && resp["sheets"][sheetID]["tables"].hasOwnProperty(tableID)){
+						var name = resp["sheets"][sheetID]["tables"][tableID]["table_name"];
+						d3.select("#tableTitle").text(name); 
+						var footnotes = resp["sheets"][sheetID]["sheet_notes"];
+						renderNotes(footnotes);
+						renderTabs(resp["sheets"], default_sheet);
+						var table = resp["sheets"][sheetID]["tables"][tableID]["table_data"];
+					//Top level keys are col numbers, but bc of nesting number of keys != number of columns
+					//however largest(integer) key == number of columns
+						var colCount = Math.max.apply(null, Object.keys(table).map(function(n){ return parseInt(n)+1 }))
+						var rows =[]
 
-					var initializer = table[0]
-					var initRows = parseInt(initializer["header_cell"]["data-row"])
-					for(var i = 0; i < initRows+1; i++){
-						rows.push(new Array(colCount))
-					}
-					var tmp = rows[initRows]
-					tmp.splice(0, 0, writeCell(initializer["header_cell"], "header"));
-					for (ind in initializer["label_cells"]){
-						var cell = initializer["label_cells"][ind]
-						var row = parseInt(cell["data-row"])
-						if(row < rows.length){
-							tmp = rows[row]
-							tmp.splice(0,0,writeCell(cell, "label"))
-						}else{
-							for(var j = rows.length; j < row+1; j++){
-								rows.push(new Array(colCount))
-								if(j == row){
-									tmp = rows[row]
-									tmp.splice(0,0,writeCell(cell, "label"))
+						var initializer = table[0]
+						var initRows = parseInt(initializer["header_cell"]["data-row"])
+						for(var i = 0; i < initRows+1; i++){
+							rows.push(new Array(colCount))
+						}
+						var tmp = rows[initRows]
+						tmp.splice(0, 0, writeCell(initializer["header_cell"], "header"));
+						for (ind in initializer["label_cells"]){
+							var cell = initializer["label_cells"][ind]
+							var row = parseInt(cell["data-row"])
+							if(row < rows.length){
+								tmp = rows[row]
+								tmp.splice(0,0,writeCell(cell, "label"))
+							}else{
+								for(var j = rows.length; j < row+1; j++){
+									rows.push(new Array(colCount))
+									if(j == row){
+										tmp = rows[row]
+										tmp.splice(0,0,writeCell(cell, "label"))
+									}
 								}
 							}
 						}
-					}
-					// d3.selectAll("#tableEmbed #tableWrapper table").remove();
-					// console.log(tableID, table)
-					var response = buildRows(rows, table)
-					resolve(response)
-			// 	}
-			// }
+						// d3.selectAll("#tableEmbed #tableWrapper table").remove();
+						// console.log(tableID, table)
+						var response = buildRows(rows, table)
+						resolve(response)
+						// reject()
+				// 	}
+				// }
 
-				})
+					})
+				}
 			})
 			promise.then(function(result){
 				return buildTable(result);
@@ -88,18 +94,31 @@ function renderTableBook(resize, table_feed, default_sheet){
 			})
 			.then(function(result){
 				d3.selectAll("svg").attr("height", d3.select("table").node().getBoundingClientRect().height);
+				pymChild.sendHeightToParent();
 			})
+		    .catch(
+        // Log the rejection reason
+		        function(reason) {
+		            console.log('Table feed is loading');
+		        });
 
 }
 // render(true);
 
-window.onresize=throttle;
+// window.onresize=throttle;
+
+pymChild = new pym.Child({ renderCallback: function(){
+	return renderTableBook(false, feed, sheetID, tableID); 
+}
+});
+// window.onresize = throttle;	
+throttle();
 
 var throttleTimer;
 function throttle() {
   window.clearTimeout(throttleTimer);
     throttleTimer = window.setTimeout(function() {
-      renderTableBook(false, feed, sheetID);
+      renderTableBook(false, feed, sheetID, tableID);
     }, 100);
 }
 
@@ -143,7 +162,7 @@ function buildTable(rows){
 		})
 		return n.length > 0;
 	}); 
-	// d3.selectAll("table").remove();
+	d3.selectAll("table").remove();
 
 	var table = d3.select("#tableWrapper")
 		table = table
@@ -375,7 +394,8 @@ function responsiveTable(table){
 	SCROLL = checkScroll();
 	var headRows = d3.selectAll("thead tr")[0].length
 	var headHeight = d3.select("thead").node().getBoundingClientRect().height;
-
+	var headerHeight = d3.select("#headerWrapper").node().getBoundingClientRect().height;
+	d3.select("#tableWrapper").style("margin-top", headerHeight + "px")
 	if(SCROLL){
 		for(var r = 2; r < headRows+1; r++){
 			d3.select("thead tr:nth-child(" + r + ")")
@@ -402,23 +422,35 @@ function responsiveTable(table){
 			return rowHeight + "px"
 		})
 	if(SCROLL){
-		d3.select("#headerWrapper").style("height", function(){
-			return (d3.select("#tableTitle").node().getBoundingClientRect().height + 49) + "px"
-		})
-		d3.select("#chartToggle").style("top", function(){
-			return (d3.select("#tableTitle").node().getBoundingClientRect().height + 2) + "px"
-		})
-		d3.select("#scrollArrows").style("top", function(){
-			return (d3.select("#tableTitle").node().getBoundingClientRect().height -2) + "px"
-		})
+			var headerHeight = d3.select("#headerWrapper").node().getBoundingClientRect().height;
+	d3.select("#tableWrapper").style("margin-top", headerHeight + "px")
+		// d3.select("#headerWrapper").classed("scrolling", false)
+		// var headerH = d3.select("#headerWrapper #tabs").node().getBoundingClientRect().height + d3.select("#headerWrapper #tableTitle").node().getBoundingClientRect().height + d3.select("#headerWrapper #chartToggle").node().getBoundingClientRect().height;
+		// d3.select("#headerWrapper").classed("scrolling", true)
+		// 	.style("height", headerH + "px")
+		// // console.log(headerH)
+		// d3.select("#chartToggle").style("top", function(){
+		// 	return (d3.select("#headerWrapper #tabs").node().getBoundingClientRect().height+d3.select("#headerWrapper #tableTitle").node().getBoundingClientRect().height - 2) + "px"
+		// })
+		d3.select("#scrollArrows")
+		// .style("top", function(){
+		// 	return (d3.select("#headerWrapper #tabs").node().getBoundingClientRect().height+d3.select("#headerWrapper #tableTitle").node().getBoundingClientRect().height -2) + "px"
+		// })
 		.transition()
 		.style("opacity",1)
+		// d3.select("#headerWrapper #tabs").style("left", 0).style("position","fixed")
+		// d3.select("#headerWrapper #tableTitle")
+		// .style("position", "fixed")
+		// .style("top", function(){
+		// 	return (d3.select("#headerWrapper #tabs").node().getBoundingClientRect().height -2) + "px"
+		// })
+
 
 		d3.selectAll(".headerElement").classed("scroll", true)
 		var rightShadow = table.append("svg")
 			.classed("rightFader", true)
 			.style("top", function(){
-				return d3.select("table").node().getBoundingClientRect().top - d3.select("body").node().getBoundingClientRect().top			
+				return d3.select("#headerWrapper").node().getBoundingClientRect().height			
 		   })
 			.append("g")
 		  var gradient = rightShadow.append("svg:defs")
@@ -451,7 +483,7 @@ function responsiveTable(table){
 		var leftShadow = table.append("svg")
 			.classed("leftFader", true)
 			.style("top", function(){
-				return d3.select("table").node().getBoundingClientRect().top - d3.select("body").node().getBoundingClientRect().top			
+				return d3.select("#headerWrapper").node().getBoundingClientRect().height			
 			})
 			.append("g")
 		  var gradient = leftShadow.append("svg:defs")
@@ -484,11 +516,17 @@ function responsiveTable(table){
 
 	}
 	else{
+		// d3.selectAll("#headerWrapper div").style("position","relative")
+		// d3.select("#headerWrapper").classed("scrolling", false)
+		// 	.style("height",0)
 		d3.select("#scrollArrows").style("top", function(){
-			return (d3.select("#tableTitle").node().getBoundingClientRect().height + 4) + "px"
+			return (d3.select("#headerWrapper").node().getBoundingClientRect().height + 4) + "px"
 		})
 		.transition()
 		.style("opacity",0)
+		d3.select("#chartToggle")
+			.style("position", "relative")
+			.style("top",0)
 	}
 
 	table.classed("scrolling", SCROLL)
@@ -557,7 +595,7 @@ function renderNotes(notes){
 	d3.select("#tableNotes")
 		.html(noteHTML)
 }
-function renderTabs(sheets){
+function renderTabs(sheets, sID){
 	if(d3.select("#headerWrapper #tabs ul").node() != null){
 		return false;
 	}else{
@@ -574,24 +612,42 @@ function renderTabs(sheets){
     				.datum({"sheet":key, "table":tID})
     				.text(sheets[key]["sheet_name"])
     				.on("click", function(d){
-    					renderTableBook(false, feed, d.sheet)
+    					d3.selectAll("#tableEmbed li")
+    						.classed("active",false)
+    					d3.select(this)
+    						.classed("active", true)
+    					renderTableBook(false, feed, d.sheet, d.table)
     				})
   			}
-}
+		}
+		d3.select("#tableEmbed .sheet_" + String(sID))
+			.classed("active", true)
 	}
 }
 
 
 
 $(document).ready(function () {
+// $(function() {
+
+//     var $body = $(document);
+//     $body.bind('scroll', function() {
+//         // "Disable" the horizontal scroll.
+//         if ($body.scrollTop() !== 0) {
+//             $body.scrollTop(0);
+//         }
+//     });
+
+// }); 
 	(function () {
 
 		var scrollHandle = 0,
 		    scrollStep = 5,
 		    fixTable = $("body");
+		  // console.log(fixTable)
 
 		//Start the scrolling process
-		$(".panner").on("mousedown", function () {
+		$("#headerWrapper .panner").mousedown(function () {
 		    var data = $(this).data('scrollModifier'),
 		        direction = parseInt(data, 10);
 
@@ -601,7 +657,7 @@ $(document).ready(function () {
 		});
 
 		//Kill the scrolling
-		$(".panner").on("mouseup", function () {
+		$("#headerWrapper .panner").mouseup(function () {
 		    stopScrolling();
 		    $(this).removeClass('active');
 		});
@@ -615,6 +671,15 @@ $(document).ready(function () {
 		            fixTable.scrollLeft(newOffset);
 		        }, 10);
 		    }
+
+		   // var $foo = $("#headerWrapper");
+		    // $foo.bind('scroll', function() {
+		        // "Disable" the horizontal scroll.
+		        // if ($foo.scrollLeft() !== 0) {
+		            // $foo.scrollLeft(0);
+		        // }
+		    // });
+
 		}
 
 		function stopScrolling() {
@@ -625,6 +690,12 @@ $(document).ready(function () {
 	}());
 	
 });
+
+// $(function() {
+
+
+
+// }); 
 
 // d3.select("body")
 // 	.on("click", function(){
