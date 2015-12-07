@@ -11,78 +11,95 @@ function getQueryVariable(variable) {
 
 var SCROLL = false;
 var RESIZE = false;
-function render(resize){
+var sheetID = null;
+// var tableID = null;
+var feed = null;
+function renderTableBook(resize, table_feed, default_sheet){
+	settings = settings; 
 	RESIZE = resize;
-	var nodeID = getQueryVariable("node")
-	var tableID = getQueryVariable("table")
+	feed = table_feed;
+	sheetID = default_sheet;
+	// tableID	= default_table;
+	var resp = null;
+	// d3.selectAll("#tableEmbed #tableWrapper table").remove();
+	// var tableID = getQueryVariable("table")
 	var promise = new Promise(function(resolve, reject){
-		d3.json("http://tpctables-stg.urban.org/node/"+ nodeID +"/table_feed", function(resp){
-			var name = resp["tables"][tableID]["table_name"];
-			d3.select("#tableTitle").text(name);
-			var footnotes = resp["sheet_notes"];
-			renderNotes(footnotes);
-			var table = resp["tables"][tableID]["table_data"];
-		//Top level keys are col numbers, but bc of nesting number of keys != number of columns
-		//however largest(integer) key == number of columns
-			var colCount = Math.max.apply(null, Object.keys(table).map(function(n){ return parseInt(n)+1 }))
-			var rows =[]
+		d3.json(table_feed, function(resp){
+		// for(var tableID in resp["sheets"][sheetID]["tables"]){
+		// 	// console.log("s1", tableID, resp)
+		// 	if(typeof(resp["sheets"]) != "undefined" && resp["sheets"][sheetID]["tables"].hasOwnProperty(tableID)){
+					var name = resp["sheets"][sheetID]["tables"][tableID]["table_name"];
+					d3.select("#tableTitle").text(name); 
+					var footnotes = resp["sheets"][sheetID]["sheet_notes"];
+					renderNotes(footnotes);
+					renderTabs(resp["sheets"]);
+					var table = resp["sheets"][sheetID]["tables"][tableID]["table_data"];
+				//Top level keys are col numbers, but bc of nesting number of keys != number of columns
+				//however largest(integer) key == number of columns
+					var colCount = Math.max.apply(null, Object.keys(table).map(function(n){ return parseInt(n)+1 }))
+					var rows =[]
 
-			var initializer = table[0]
-			var initRows = parseInt(initializer["header_cell"]["data-row"])
-			for(var i = 0; i < initRows+1; i++){
-				rows.push(new Array(colCount))
-			}
-			var tmp = rows[initRows]
-			tmp.splice(0, 0, writeCell(initializer["header_cell"], "header"));
-			for (ind in initializer["label_cells"]){
-				var cell = initializer["label_cells"][ind]
-				var row = parseInt(cell["data-row"])
-				if(row < rows.length){
-					tmp = rows[row]
-					tmp.splice(0,0,writeCell(cell, "label"))
-				}else{
-					for(var j = rows.length; j < row+1; j++){
+					var initializer = table[0]
+					var initRows = parseInt(initializer["header_cell"]["data-row"])
+					for(var i = 0; i < initRows+1; i++){
 						rows.push(new Array(colCount))
-						if(j == row){
+					}
+					var tmp = rows[initRows]
+					tmp.splice(0, 0, writeCell(initializer["header_cell"], "header"));
+					for (ind in initializer["label_cells"]){
+						var cell = initializer["label_cells"][ind]
+						var row = parseInt(cell["data-row"])
+						if(row < rows.length){
 							tmp = rows[row]
 							tmp.splice(0,0,writeCell(cell, "label"))
+						}else{
+							for(var j = rows.length; j < row+1; j++){
+								rows.push(new Array(colCount))
+								if(j == row){
+									tmp = rows[row]
+									tmp.splice(0,0,writeCell(cell, "label"))
+								}
+							}
 						}
 					}
-				}
-			}
+					// d3.selectAll("#tableEmbed #tableWrapper table").remove();
+					// console.log(tableID, table)
+					var response = buildRows(rows, table)
+					resolve(response)
+			// 	}
+			// }
 
-			var resp = buildRows(rows, table)
-			resolve(resp)
+				})
+			})
+			promise.then(function(result){
+				return buildTable(result);
+			})
+			.then(function(table){
+				return tdClasses(table)
+			})
+			.then(function(table){
+				return styleTable(table)
+			})
+			.then(function(table){
+				return responsiveTable(table);
+			})
+			.then(function(table){
+				return scrollTable(table);
+			})
+			.then(function(result){
+				d3.selectAll("svg").attr("height", d3.select("table").node().getBoundingClientRect().height);
+			})
 
-		})
-	})
-	promise.then(function(result){
-		return buildTable(result);
-	})
-	.then(function(table){
-		return tdClasses(table)
-	})
-	.then(function(table){
-		return styleTable(table)
-	})
-	.then(function(table){
-		return responsiveTable(table);
-	})
-	.then(function(table){
-		return scrollTable(table);
-	})
-	.then(function(result){
-		d3.selectAll("svg").attr("height", d3.select("table").node().getBoundingClientRect().height);
-	})
 }
-render(true);
+// render(true);
+
 window.onresize=throttle;
 
 var throttleTimer;
 function throttle() {
   window.clearTimeout(throttleTimer);
     throttleTimer = window.setTimeout(function() {
-      render(false);
+      renderTableBook(false, feed, sheetID);
     }, 100);
 }
 
@@ -126,9 +143,9 @@ function buildTable(rows){
 		})
 		return n.length > 0;
 	}); 
-	d3.selectAll("table").remove();
+	// d3.selectAll("table").remove();
 
-	var table = d3.select("#testTable")
+	var table = d3.select("#tableWrapper")
 		table = table
 			.append("table")
 		var section = table.append("thead")
@@ -540,6 +557,29 @@ function renderNotes(notes){
 	d3.select("#tableNotes")
 		.html(noteHTML)
 }
+function renderTabs(sheets){
+	if(d3.select("#headerWrapper #tabs ul").node() != null){
+		return false;
+	}else{
+		var ul = d3.select("#headerWrapper #tabs")
+			.append("ul")
+
+		for (var key in sheets) {
+  			if (sheets.hasOwnProperty(key)) {
+  				for(var tID in sheets[key]["tables"]){
+  					break;
+  				}
+    			ul.append("li")
+    				.attr("class", "sheetTab sheet_" + key)
+    				.datum({"sheet":key, "table":tID})
+    				.text(sheets[key]["sheet_name"])
+    				.on("click", function(d){
+    					renderTableBook(false, feed, d.sheet)
+    				})
+  			}
+}
+	}
+}
 
 
 
@@ -585,3 +625,8 @@ $(document).ready(function () {
 	}());
 	
 });
+
+// d3.select("body")
+// 	.on("click", function(){
+// 		renderTableBook(false, feed, 48474, 48472)
+// 	})
