@@ -15,6 +15,7 @@
     cursor: pointer;
     margin-right: 10px;
     margin-top: 10px;
+    font-size: 14px;
 }
 #tableEmbed li:hover{
     color: white;

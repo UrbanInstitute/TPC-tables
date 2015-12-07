@@ -13,9 +13,23 @@ function getQueryVariable(variable) {
 var SCROLL = false;
 var RESIZE = false;
 var sheetID = null;
+var oldSheetID = null;
 var tableID = null;
 var feed = false;
+function render(resize, table_feed, default_sheet){
+	console.log(table_feed)
+	d3.json(table_feed, function(error, resp){
+		for(var tableID in resp["sheets"][default_sheet]["tables"]){
+			// 	// console.log("s1", tableID, resp)
+				if(typeof(resp["sheets"]) != "undefined" && resp["sheets"][default_sheet]["tables"].hasOwnProperty(tableID)){
+					renderTableBook(resize, table_feed, default_sheet, tableID);
+				}
+			}
+	});
+}
+
 function renderTableBook(resize, table_feed, default_sheet, default_table){
+	console.log(default_table)
 	// settings = settings; 
 	RESIZE = resize;
 	feed = table_feed;
@@ -25,9 +39,13 @@ function renderTableBook(resize, table_feed, default_sheet, default_table){
 	// d3.selectAll("#tableEmbed #tableWrapper table").remove();
 	// var tableID = getQueryVariable("table")
 	var promise = new Promise(function(resolve, reject){
-		if(!feed){ reject("loading")}
+		// var promises = []
+
+		if(!feed){ reject("Table feed is loading")}
 		else{
 			d3.json(table_feed, function(error, resp){
+				// for(var tableID in resp["sheets"][default_sheet]["tables"]){
+				// promises.push(function(){
 				if (error) return console.warn("loading...");
 			// for(var tableID in resp["sheets"][sheetID]["tables"]){
 			// 	// console.log("s1", tableID, resp)
@@ -70,14 +88,24 @@ function renderTableBook(resize, table_feed, default_sheet, default_table){
 						// console.log(tableID, table)
 						var response = buildRows(rows, table)
 						resolve(response)
+						// return response;
+
 						// reject()
-				// 	}
+					// })
+					// }	
+					// Promise.all(promises).then(
+					// 	function(response){
+					// 		console.log(response)
+					// 		resolve(response)
+					// 	}
+					// );
 				// }
 
 					})
 				}
 			})
 			promise.then(function(result){
+				console.log(result)
 				return buildTable(result);
 			})
 			.then(function(table){
@@ -97,10 +125,10 @@ function renderTableBook(resize, table_feed, default_sheet, default_table){
 				pymChild.sendHeightToParent();
 			})
 		    .catch(
-        // Log the rejection reason
-		        function(reason) {
-		            console.log('Table feed is loading');
-		        });
+	        function(reason) {
+		        console.log(reason);
+	        });
+
 
 }
 // render(true);
@@ -157,16 +185,30 @@ function buildRows(rows, table){
 
 function buildTable(rows){
 	rows = rows.filter(function(n){
+		// console.log(n)
 		n = n.filter(function(m){
 			return m != undefined;
 		})
 		return n.length > 0;
 	}); 
-	d3.selectAll("table").remove();
-
+	// d3.selectAll("table").remove();
+	if(oldSheetID == null){
+		oldSheetID = sheetID
+	}
+	// console.log("a", sheetID, oldSheetID)
+	if(parseInt(sheetID) == parseInt(oldSheetID)){
+		// console.log("true")
+		d3.selectAll(".table_" + tableID).remove();
+	}
+	else{
+		d3.selectAll("table").remove();
+	}
+	oldSheetID = sheetID;
+	// console.log("b", sheetID, oldSheetID)
 	var table = d3.select("#tableWrapper")
 		table = table
 			.append("table")
+			.classed("table_" + String(tableID), true)
 		var section = table.append("thead")
 		table.append("tbody")
 
@@ -214,7 +256,7 @@ function tdClasses(table){
 	table.selectAll("td")
 		// .append("span")
 		.attr("class", function(d){
-			var col = d3.selectAll("td[data-col='" + d["data-col"] + "']").data();
+			var col = table.selectAll("td[data-col='" + d["data-col"] + "']").data();
 			col = col.filter(function(o){ return( !isNaN(parseFloat(o.num))) });
 			var max = Math.max.apply(Math,col.map(function(o){return parseFloat(o.num);}))
 			var min = Math.min.apply(Math,col.map(function(o){return parseFloat(o.num);}))
@@ -407,7 +449,7 @@ function responsiveTable(table){
 		d3.selectAll(".spacer").remove()
 	}
 	d3.select("thead tr:nth-child(1) th:nth-child(1)")
-		.style("height", headHeight-32 + "px")
+		.style("height", headHeight + "px")
 
 
 	d3.selectAll("tbody tr")
