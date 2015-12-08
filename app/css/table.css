@@ -19,11 +19,11 @@
 }
 #tableEmbed li:hover{
     color: white;
-    background-color: #1696d2 !important;
+    background-color: #008bb0 !important;
 }
 #tableEmbed li.active{
     color: white;
-    background-color: #062635
+    background-color: #174a7c
 }
 
 #tableEmbed table {
@@ -198,6 +198,42 @@
     padding-left: 10px;
     font-size: 1.5em;
     color: #174a7c;
+    position: relative;
+    top: 18px;
+    left: -7px;
+}
+#tableEmbed #tableTitle .tableText{
+    display: inline;
+    float: left;
+}
+#tableEmbed #tableTitle .tableButtons{
+    display: inline;
+}
+
+#tableEmbed #tableTitle .tableButtons span{
+    display: block;
+    height: 22px;
+    width: 22px;
+    line-height: 25px;
+    -moz-border-radius: 3px;
+    border-radius: 20px;
+    margin-left: 10px;
+    margin-top: 4px;
+    background-color: #eee;
+    color: black;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+    float: left;
+    cursor: pointer;
+}
+#tableEmbed #tableTitle .tableButtons span.active{
+    color: white;
+    background-color: #174a7c;
+}
+#tableEmbed #tableTitle .tableButtons span:hover{
+    color: white;
+    background-color: #008bb0 !important;
 }
 #tableEmbed #headerWrapper{
     width: 100%;
@@ -216,9 +252,19 @@
     cursor: pointer;
     opacity: 0;
 }
+.panner{
+    cursor: pointer;
+}
 
 #tableEmbed #tableTitle.scroll{
     /*position: fixed;*/
+}
+#tableEmbed #chartToggle{
+    position: relative;
+    top: 39px;
+    display: inline-block;
+    float: left;
+    width: 100%;
 }
 #tableEmbed #chartToggle.scroll{
     /*position: fixed;*/

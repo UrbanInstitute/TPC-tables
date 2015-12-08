@@ -17,7 +17,7 @@ var oldSheetID = null;
 var tableID = null;
 var feed = false;
 function render(resize, table_feed, default_sheet){
-	console.log(table_feed)
+	// console.log(table_feed)
 	d3.json(table_feed, function(error, resp){
 		for(var tableID in resp["sheets"][default_sheet]["tables"]){
 			// 	// console.log("s1", tableID, resp)
@@ -29,13 +29,14 @@ function render(resize, table_feed, default_sheet){
 }
 
 function renderTableBook(resize, table_feed, default_sheet, default_table){
-	console.log(default_table)
+	// console.log(default_table)
 	// settings = settings; 
 	RESIZE = resize;
 	feed = table_feed;
 	sheetID = default_sheet;
 	tableID	= default_table;
 	var resp = null;
+	// var pymChild;
 	// d3.selectAll("#tableEmbed #tableWrapper table").remove();
 	// var tableID = getQueryVariable("table")
 	var promise = new Promise(function(resolve, reject){
@@ -51,10 +52,11 @@ function renderTableBook(resize, table_feed, default_sheet, default_table){
 			// 	// console.log("s1", tableID, resp)
 			// 	if(typeof(resp["sheets"]) != "undefined" && resp["sheets"][sheetID]["tables"].hasOwnProperty(tableID)){
 						var name = resp["sheets"][sheetID]["tables"][tableID]["table_name"];
-						d3.select("#tableTitle").text(name); 
+						d3.select("#tableTitle .tableText").text(name); 
 						var footnotes = resp["sheets"][sheetID]["sheet_notes"];
 						renderNotes(footnotes);
 						renderTabs(resp["sheets"], default_sheet);
+						renderButtons(resp["sheets"][sheetID], sheetID, default_table)
 						var table = resp["sheets"][sheetID]["tables"][tableID]["table_data"];
 					//Top level keys are col numbers, but bc of nesting number of keys != number of columns
 					//however largest(integer) key == number of columns
@@ -105,7 +107,7 @@ function renderTableBook(resize, table_feed, default_sheet, default_table){
 				}
 			})
 			promise.then(function(result){
-				console.log(result)
+				// console.log(result)
 				return buildTable(result);
 			})
 			.then(function(table){
@@ -122,11 +124,14 @@ function renderTableBook(resize, table_feed, default_sheet, default_table){
 			})
 			.then(function(result){
 				d3.selectAll("svg").attr("height", d3.select("table").node().getBoundingClientRect().height);
-				pymChild.sendHeightToParent();
+				// console.log(pymChild)
+				// console.log(table)
+				pymChild.sendHeight();
 			})
 		    .catch(
 	        function(reason) {
 		        console.log(reason);
+
 	        });
 
 
@@ -192,17 +197,17 @@ function buildTable(rows){
 		return n.length > 0;
 	}); 
 	// d3.selectAll("table").remove();
-	if(oldSheetID == null){
-		oldSheetID = sheetID
-	}
-	// console.log("a", sheetID, oldSheetID)
-	if(parseInt(sheetID) == parseInt(oldSheetID)){
-		// console.log("true")
-		d3.selectAll(".table_" + tableID).remove();
-	}
-	else{
+	// if(oldSheetID == null){
+	// 	oldSheetID = sheetID
+	// }
+	// // console.log("a", sheetID, oldSheetID)
+	// if(parseInt(sheetID) == parseInt(oldSheetID)){
+	// 	// console.log("true")
+	// 	d3.selectAll(".table_" + tableID).remove();
+	// }
+	// else{
 		d3.selectAll("table").remove();
-	}
+	// }
 	oldSheetID = sheetID;
 	// console.log("b", sheetID, oldSheetID)
 	var table = d3.select("#tableWrapper")
@@ -298,7 +303,7 @@ function styleTable(table){
 	d3.selectAll(".symbol")
 		.on("mouseover", function(){
 			var symbol = d3.select(this).attr("class").replace("symbol","").replace("highlight").replace(/ /g,"").split("_")[1]
-			console.log(symbol)
+			// console.log(symbol)
 			d3.selectAll(".footer_" + symbol)
 				.classed("highlight", true)
 			d3.selectAll(".body_" + symbol)
@@ -311,7 +316,7 @@ function styleTable(table){
 	d3.selectAll(".footnote")
 		.on("mouseover", function(){
 			var symbol = d3.select(this).attr("class").replace("footnote","").replace("highlight").replace(/ /g,"").split("_")[1]
-			console.log(symbol)
+			// console.log(symbol)
 			d3.selectAll(".footer_" + symbol)
 				.classed("highlight", true)
 			d3.selectAll(".body_" + symbol)
@@ -566,9 +571,7 @@ function responsiveTable(table){
 		})
 		.transition()
 		.style("opacity",0)
-		d3.select("#chartToggle")
-			.style("position", "relative")
-			.style("top",0)
+
 	}
 
 	table.classed("scrolling", SCROLL)
@@ -665,6 +668,73 @@ function renderTabs(sheets, sID){
 		d3.select("#tableEmbed .sheet_" + String(sID))
 			.classed("active", true)
 	}
+
+}
+
+function renderButtons(sheet, sID, tID){
+	var buttons = d3.select("#tableTitle .tableButtons")
+	// buttons.selectAll("span").remove();
+	// var label = 1;
+	// var keys = []
+	// label =1;
+	// for(var key in sheet["tables"]){
+	// 	keys.push({"sheet":String(sID),"table":String(key),"text":label})
+	// 	label += 1;
+	// }
+	// console.log(keys)
+
+	// // for(var i=0; i<keys.length; i++){
+	// 	// var key = keys[i]
+	// 	// if (sheet["tables"].hasOwnProperty(key)){
+	// 	buttons
+	// 		.selectAll("span")
+	// 		.data(keys)
+	// 		.enter()
+	// 		.append("span")
+	// 		.attr("class", function(d){ return "tableButton table_" + d.table})
+	// 			// .text(function(){ console.log(i, key); return i})
+				
+	// 		.text(function(d){ console.log(d); return d.text})
+	// 		.on("click", function(d){
+	// 				d3.selectAll(".tableButton")
+	// 					.classed("active",false)
+	// 				d3.select(this)
+	// 					.classed("active", true)
+	// 				renderTableBook(false, feed, parseInt(d.sheet), parseInt(d.table))
+	// 		})
+
+		buttons.selectAll("span").remove();
+		label =1;
+		var keys = []
+		for (var key in sheet["tables"]) {
+  			if (sheet["tables"].hasOwnProperty(key)) {
+  							keys.push(key)
+
+  				// for(var tID in sheets[key]["tables"]){
+  				// 	break;
+  				// }
+    			buttons.append("span")
+    				.classed("sheetTab sheet_" + key, true)
+    				.datum({"sheet":sID, "table":key})
+    				.text(label)
+    				.on("click", function(d){
+    					d3.selectAll("#tableTitle span")
+    						.classed("active",false)
+    					d3.select(this)
+    						.classed("active", true)
+    					renderTableBook(false, feed, d.sheet, d.table)
+    				})
+  			}
+  			label += 1;
+		}
+
+		if(keys.length == 1){
+			console.log("foo")
+			buttons.selectAll("span").remove();
+		}
+		d3.select("span.sheet_" + String(tID))
+			.classed("active", true)
+
 }
 
 
