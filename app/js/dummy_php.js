@@ -5,6 +5,3 @@ var settings = {
 }
 
 renderTableBook(true, settings.table_feed, settings.default_sheet, settings.default_table)
-// renderTableBook(true, settings.table_feed, settings.default_sheet, 48450)
-
-// render(true, settings.table_feed, settings.default_sheet)
