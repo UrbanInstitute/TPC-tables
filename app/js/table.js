@@ -51,6 +51,7 @@ function renderTableBook(resize, table_feed, default_sheet, default_table){
 			// for(var tableID in resp["sheets"][sheetID]["tables"]){
 			// 	// console.log("s1", tableID, resp)
 			// 	if(typeof(resp["sheets"]) != "undefined" && resp["sheets"][sheetID]["tables"].hasOwnProperty(tableID)){
+						d3.select("#bookTitle").text(resp["tablebook_name"])
 						var name = resp["sheets"][sheetID]["tables"][tableID]["table_name"];
 						d3.select("#tableTitle .tableText").text(name); 
 						var footnotes = resp["sheets"][sheetID]["sheet_notes"];

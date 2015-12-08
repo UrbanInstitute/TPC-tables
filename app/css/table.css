@@ -193,6 +193,10 @@
 }
 
 /********************** OUTSIDE OF TABLE STYLES *******************/
+#tableEmbed #bookTitle{
+    font-weight: 600;
+    font-size: 27px;
+}
 #tableEmbed #tableTitle{
     /*position: absolute;*/
     padding-left: 10px;
