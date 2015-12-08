@@ -269,6 +269,7 @@
     display: inline-block;
     float: left;
     width: 100%;
+    z-index: -1;
 }
 #tableEmbed #chartToggle.scroll{
     /*position: fixed;*/
