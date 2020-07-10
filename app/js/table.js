@@ -16,7 +16,8 @@ function render(resize){
 	var nodeID = getQueryVariable("node")
 	var tableID = getQueryVariable("table")
 	var promise = new Promise(function(resolve, reject){
-		d3.json("http://tpctables-stg.urban.org/node/"+ nodeID +"/table_feed", function(resp){
+		d3.json("data/sample2.json", function(resp){
+			console.log(resp)
 			var name = resp["tables"][tableID]["table_name"];
 			d3.select("#tableTitle").text(name);
 			var footnotes = resp["sheet_notes"];
